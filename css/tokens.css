@@ -1,0 +1,207 @@
+/* ============================================================
+   TIER 1 — RAW VALUES.
+   Stone-neutral monochrome architecture. Light-first, no dark mode.
+   Palette: "Stone Emerald" (warm neutral + emerald accent).
+   ============================================================ */
+:root {
+  /* Surfaces & Greys — STONE ramp (warm neutral) */
+  --raw-color-white: #ffffff;
+  --raw-color-grey-25: #fafaf9;   /* stone-50  — page background */
+  --raw-color-grey-50: #f5f5f4;   /* stone-100 — subtle band       */
+  --raw-color-grey-100: #e7e5e4;  /* stone-200 — hairline border   */
+  --raw-color-grey-200: #d6d3d1;  /* stone-300 — hover border      */
+  --raw-color-grey-300: #a8a29e;  /* stone-400 — faint meta only   */
+  --raw-color-grey-400: #78716c;  /* stone-500 — muted text 4.6:1  */
+  --raw-color-grey-500: #57534e;  /* stone-600 — secondary  7.5:1  */
+  --raw-color-grey-600: #44403c;  /* stone-700                     */
+  --raw-color-grey-700: #292524;  /* stone-800                     */
+  --raw-color-grey-800: #1c1917;  /* stone-900 — primary text 18.9:1 */
+  --raw-color-grey-900: #0c0a09;  /* stone-950 — deepest ink       */
+
+  --raw-color-ink-alpha-70: rgb(28 25 23 / 0.72);
+  --raw-color-ink-alpha-10: rgb(28 25 23 / 0.10);
+  --raw-color-ink-alpha-06: rgb(28 25 23 / 0.06);
+  --raw-color-ink-alpha-04: rgb(28 25 23 / 0.04);
+
+  /* Status — emerald accent.
+     CONTRAST CONTRACT (WCAG 2.2 SC 1.4.3 / 1.4.11):
+       700 on #fafaf9 = 5.25:1  -> accent TEXT on light  (AA pass)
+       600 on #fafaf9 = 3.61:1  -> non-text ONLY (icons, focus ring, 3:1)
+       500 on #fafaf9 = 2.43:1  -> FAILS: never text or meaningful UI on light
+       500 on #0a0a0a = 7.80:1  -> safe on dark surfaces only
+       400 on #0c0a09 = 10.28:1 -> safe on dark surfaces only            */
+  --raw-color-emerald-50: #ecfdf5;
+  --raw-color-emerald-200: #a7f3d0;
+  --raw-color-emerald-400: #34d399;
+  --raw-color-emerald-500: #10b981;
+  --raw-color-emerald-600: #059669;
+  --raw-color-emerald-700: #047857;
+  --raw-color-emerald-800: #065f46;
+
+  /* Type scale — Major Third (1.25), tightened at the top.
+     Fluid via clamp() at the display end; fixed below 1.5rem.
+     display-xl  3rem -> 5rem   / 1.00 / 600 / -0.03em  hero
+     display-l  2.5rem -> 4rem  / 1.05 / 600 / -0.025em section
+     display-m  2rem -> 3rem    / 1.10 / 600 / -0.02em  sub-section  */
+  --raw-font-size-96: 6rem;
+  --raw-font-size-70: 4.375rem;
+  --raw-font-size-52: 3.25rem;
+  --raw-font-size-38: 2.375rem;
+  --raw-font-size-20: 1.25rem;
+  --raw-font-size-18: 1.125rem;
+  --raw-font-size-16: 1rem;
+  --raw-font-size-14: 0.875rem;
+  --raw-font-size-13: 0.8125rem;
+  --raw-font-size-12: 0.75rem;
+  --raw-font-size-11: 0.6875rem;
+  --raw-font-size-55: 3.4375rem;
+  --raw-font-size-36: 2.25rem;
+  --raw-font-size-28: 1.75rem;
+  --raw-font-size-22: 1.375rem;
+
+  --raw-leading-95: 0.95;
+  --raw-leading-90: 0.9;
+  --raw-leading-72: 0.72;
+  --raw-leading-110: 1.1;
+
+  /* Tracking: negative on display sizes (optical correction),
+     positive on small caps-style labels (legibility). */
+  --raw-tracking-stat: -0.05em;
+  --raw-tracking-display: -0.03em;
+  --raw-tracking-heading: -0.02em;
+  --raw-tracking-label: 0.06em;
+  --raw-tracking-eyebrow: 0.08em;
+
+  --raw-duration-fast: 150ms;
+  --raw-duration-normal: 200ms;
+  --raw-duration-slow: 300ms;
+
+  /* Easing — compositor-friendly, settle-style curves. */
+  --raw-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --raw-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --raw-ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ==========================================================
+     TIER 2 — SEMANTIC ROLES (Unified Light Grey Theme)
+     ========================================================== */
+  --background: var(--raw-color-grey-25);
+  --surface-raised: var(--raw-color-white);
+  --surface-muted: var(--raw-color-grey-50);
+  --surface-soft: var(--raw-color-grey-100);
+
+  /* Typography */
+  --foreground: var(--raw-color-grey-800);
+  --foreground-muted: var(--raw-color-grey-500);
+  --foreground-faint: var(--raw-color-grey-400);
+
+  /* Borders */
+  --border-muted: var(--raw-color-grey-100);
+  --border-strong: var(--raw-color-grey-200);
+
+  /* Light aliases for legacy roles */
+  --surface-dark: var(--raw-color-white);
+  --surface-dark-raised: var(--raw-color-grey-50);
+  --surface-black: var(--raw-color-grey-25);
+  --foreground-on-dark: var(--raw-color-grey-800);
+  --foreground-on-dark-muted: var(--raw-color-grey-500);
+  --foreground-on-dark-faint: var(--raw-color-grey-400);
+  --border-on-dark: var(--raw-color-grey-100);
+
+  /* Interactive Accent: emerald (semantic role, contrast-safe) */
+  --accent: var(--raw-color-emerald-700);
+  --accent-text: var(--raw-color-emerald-700);
+  --accent-deep: var(--raw-color-emerald-800);
+  --accent-on-accent: var(--raw-color-white);
+  --accent-muted: var(--raw-color-emerald-200);
+  --accent-wash: var(--raw-color-emerald-50);
+  --focus-ring: var(--raw-color-emerald-600);
+
+  /* Status Indicator */
+  --status-live: var(--raw-color-emerald-600);
+
+  /* Canvas and Technical Ornament */
+  --map-dot: var(--raw-color-grey-200);
+  --map-grid: var(--raw-color-grey-100);
+  --map-grid-ghost: var(--raw-color-grey-50);
+  --map-mark: var(--raw-color-grey-800);
+  --timeline-outline: var(--raw-color-grey-200);
+  --timeline-fill: var(--raw-color-ink-alpha-06);
+  --timeline-rail: var(--raw-color-grey-200);
+  --field-contour: var(--raw-color-ink-alpha-04);
+  --footer-contour: var(--raw-color-ink-alpha-04);
+
+  /* Fluid typography — Major Third at the display end,
+     tightened ratio between steps so the hero reads dense and confident. */
+  --type-impact: clamp(3rem, 2.4rem + 2.6vw, 5rem);
+  --type-display-lg: clamp(2.5rem, 2rem + 2vw, 4rem);
+  --type-display: clamp(2rem, 1.7rem + 1.3vw, 3rem);
+  --type-heading: clamp(1.375rem, 1.2rem + 0.9vw, 1.75rem);
+  --type-title: 1.375rem;
+  --type-lead: 1.125rem;
+  --type-label: 0.8125rem;
+  --type-body: 1rem;
+  --type-body-sm: 0.875rem;
+  --type-eyebrow: 0.75rem;
+  --type-micro: 0.6875rem;
+  --type-display-sm: clamp(1.75rem, 1.5rem + 1.2vw, 2.375rem);
+  --type-year: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+
+  --leading-headline: 1.05;
+  --leading-flat: 1;
+  --leading-cap: 1.1;
+  --leading-display: 1.1;
+  --leading-body: 1.7;
+
+  /* Vertical rhythm — 4px base unit, 8px macro multiples. */
+  --pad-section-y: clamp(5rem, 3rem + 8vw, 12rem);
+  --pad-section-x: 2.5rem;
+  --gap-block: 2rem;
+  --measure-prose: 65ch;
+  --container-max: 72rem;
+
+  /* Radii — small and architectural, never pill-shaped. */
+  --radius-chip: 4px;
+  --radius-card: 6px;
+  --radius-modal: 12px;
+
+  /* Elevation — flat-first; shadows are whisper-thin. */
+  --shadow-xs: 0 1px 2px 0 rgb(28 25 23 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(28 25 23 / 0.08), 0 1px 2px -1px rgb(28 25 23 / 0.06);
+  --shadow-lg: 0 10px 15px -3px rgb(28 25 23 / 0.08), 0 4px 6px -4px rgb(28 25 23 / 0.05);
+
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-plate: 300ms;
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-plate: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Typefaces — Geist Sans + Geist Mono (SIL OFL 1.1).
+     Loaded in index.html; Inter / system faces are the graceful fallback. */
+  --font-sans: "Geist", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* OpenType — ligatures/contextual alternates for prose,
+     tabular figures everywhere numbers are compared or aligned. */
+  --font-features-text: "liga" 1, "calt" 1;
+  --font-features-numeric: "tnum" 1, "zero" 1;
+}
+
+/* Root font-size bands */
+html { font-size: 16px; }
+@media (min-width: 1441px) { html { font-size: clamp(16px, 0.833333vw, 24px); } }
+@media (min-width: 1280px) and (max-width: 1440px) { html { font-size: 1.111111vw; } }
+@media (max-width: 1279px) { html { font-size: 16px; } }
+
+/* Large-display band */
+@media (min-width: 1441px) {
+  [data-hero] {
+    --type-impact: clamp(3.5rem, 3rem + 2.6vw, 5.5rem);
+    --type-display-lg: clamp(3rem, 2.4rem + 2vw, 4.25rem);
+    --type-display: clamp(2.25rem, 1.9rem + 1.3vw, 3.25rem);
+    --type-heading: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+  }
+  [data-systems] {
+    --type-display-sm: clamp(2rem, 1.7rem + 1.2vw, 2.75rem);
+  }
+}

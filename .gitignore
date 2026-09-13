@@ -1,0 +1,17 @@
+# Python environment & cache
+.venv/
+__pycache__/
+*.pyc
+
+# Local backup & test directories
+.attic/
+.video-originals/
+*.bak
+project-private.txt
+
+# Generated test screenshots
+assets/generated/
+
+# OS metadata
+.DS_Store
+Thumbs.db

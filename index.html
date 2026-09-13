@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Ryas Rafi Karim — AI Systems & Edge Vision Engineer</title>
+  <meta name="description" content="AI Systems Engineer specializing in Computer Vision, Edge AI, TensorRT optimization, and local LLM agents. Production vision systems across 3,000+ CCTV cameras and a 26-vessel maritime fleet." />
+  <meta name="author" content="Ryas Rafi Karim" />
+  <meta name="theme-color" content="#fafaf9" />
+  <link rel="canonical" href="https://ryasrafikarim.com/" />
+
+  <!-- Open Graph (LinkedIn, Facebook, WhatsApp) -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="Ryas Rafi Karim" />
+  <meta property="og:title" content="Ryas Rafi Karim — AI Systems & Edge Vision Engineer" />
+  <meta property="og:description" content="I make vision models run on the cameras and vessels that are already deployed. Computer vision, edge inference, and air-gapped LLM agents in production." />
+  <meta property="og:url" content="https://ryasrafikarim.com/" />
+  <meta property="og:image" content="https://ryasrafikarim.com/assets/projects/sentinel_edge_lpr.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sentinel 15-CCTV license plate recognition pipeline, Jakarta" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="profile:first_name" content="Ryas" />
+  <meta property="profile:last_name" content="Rafi Karim" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Ryas Rafi Karim — AI Systems & Edge Vision Engineer" />
+  <meta name="twitter:description" content="Edge computer vision, TensorRT-optimized inference, and local LLM agents deployed in production across municipal CCTV and maritime fleets." />
+  <meta name="twitter:image" content="https://ryasrafikarim.com/assets/projects/sentinel_edge_lpr.jpg" />
+  <meta name="twitter:image:alt" content="Sentinel 15-CCTV license plate recognition pipeline, Jakarta" />
+
+  <!-- Structured data: ProfilePage -> Person -> credentials + deployed systems -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        "@id": "https://ryasrafikarim.com/#profilepage",
+        "url": "https://ryasrafikarim.com/",
+        "name": "Ryas Rafi Karim — AI Systems & Edge Vision Engineer",
+        "mainEntity": { "@id": "https://ryasrafikarim.com/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://ryasrafikarim.com/#person",
+        "name": "Ryas Rafi Karim",
+        "jobTitle": "AI Systems & Edge Vision Engineer",
+        "email": "mailto:ryasrafikarim123@gmail.com",
+        "telephone": "+62-813-8040-3298",
+        "url": "https://ryasrafikarim.com/",
+        "image": "https://ryasrafikarim.com/assets/images/me.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Jakarta",
+          "addressCountry": "ID"
+        },
+        "knowsAbout": [
+          "Computer Vision",
+          "Edge AI",
+          "TensorRT",
+          "ONNX Runtime",
+          "NVIDIA Jetson",
+          "Automatic License Plate Recognition",
+          "Object Detection",
+          "Large Language Models",
+          "Retrieval-Augmented Generation",
+          "Embedded Systems"
+        ],
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Universitas Singaperbangsa Karawang"
+        },
+        "hasCredential": [
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "TensorFlow Developer Certificate",
+            "credentialCategory": "certificate",
+            "recognizedBy": { "@type": "Organization", "name": "Google" }
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "Machine Learning Specialization",
+            "credentialCategory": "certificate",
+            "recognizedBy": { "@type": "Organization", "name": "Stanford University / Coursera" }
+          },
+          {
+            "@type": "EducationalOccupationalCredential",
+            "name": "DHSP — Video Surveillance System",
+            "credentialCategory": "certificate",
+            "recognizedBy": { "@type": "Organization", "name": "Dahua Technology" }
+          }
+        ],
+        "sameAs": [
+          "https://github.com/ryasrk",
+          "https://linkedin.com/in/ryasrafikarim"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <!-- Typography: Geist Sans + Geist Mono (SIL OFL 1.1) via Google Fonts,
+       with Inter as the preconnected fallback face. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@300..600&display=swap"
+  />
+  <link rel="preconnect" href="https://rsms.me/" />
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+
+  <!-- Core CSS token tiers and layouts -->
+  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+
+  <!-- ESM Import Map for Three.js and Lenis -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.0/examples/jsm/",
+      "lenis": "https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.mjs"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Keyboard users land here first; visually hidden until focused. -->
+  <a href="#hero" class="skip-link">Skip to main content</a>
+
+  <!-- ============================================================
+       SVG DEFINITIONS & MASKS
+       ============================================================ -->
+  <svg class="sr-only" width="0" height="0">
+    <defs>
+      <clipPath id="plate-clip" clipPathUnits="objectBoundingBox">
+        <polygon points="0 0.05, 0.05 0, 0.95 0, 1 0.05, 1 0.95, 0.95 1, 0.05 1, 0 0.95" />
+      </clipPath>
+    </defs>
+  </svg>
+
+  <!-- ============================================================
+       LOADING VEIL — Damped Spring Progress + Silhouette Mask
+       ============================================================ -->
+  <div id="loading-veil" aria-label="Loading portfolio experience">
+    <div id="veil-content" class="veil-container">
+      <div class="veil-silhouette-box">
+        <div class="veil-silhouette-bg"></div>
+        <div id="veil-silhouette-fill" class="veil-silhouette-fill"></div>
+      </div>
+      <div class="veil-meter-track">
+        <div id="veil-meter-fill" class="veil-meter-fill"></div>
+      </div>
+      <div id="veil-name" class="veil-label">Loading — Ryas Rafi Karim</div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MASTHEAD NAVIGATION
+       ============================================================ -->
+  <header class="masthead">
+    <a href="#hero" class="brand-mark">
+      <span class="brand-dot"></span>
+      <span>RYAS RAFI KARIM</span>
+    </a>
+
+    <nav class="masthead-nav hide-below-sm">
+      <a href="#hero" class="masthead-link">Identity</a>
+      <a href="#timeline" class="masthead-link">Timeline</a>
+      <a href="#paddock" class="masthead-link">Deployments</a>
+      <a href="#tech-stacks" class="masthead-link">Tech Stacks</a>
+      <a href="#contact" class="masthead-link">Contact</a>
+    </nav>
+
+    <button id="menu-toggle-btn" class="masthead-menu-toggle show-below-sm" aria-label="Open menu" aria-expanded="false">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+  </header>
+
+  <main id="main-content">
+
+  <!-- ============================================================
+       BLOCK 1: HERO (Sticky Recede Layer 1)
+       ============================================================ -->
+  <section id="hero" class="stack-layer section-hero" data-pinned data-hero style="--layer-z: 10;">
+    <div class="stack-inner" data-pinned-inner>
+      <div class="hero-canvas-wrap">
+        <canvas id="hero-canvas"></canvas>
+      </div>
+
+      <!-- Floating 3D Spatial Radar HUD -->
+      <div class="hero-hud-telemetry hide-below-md">
+        <div class="hero-hud-row">
+          <span class="pulse-indicator"></span>
+          <span class="hero-hud-label">LIDAR 3D SPATIAL RADAR</span>
+        </div>
+        <div class="hero-hud-metrics">
+          <span id="hud-coord-x">X: +0.00</span>
+          <span id="hud-coord-y">Y: +0.00</span>
+          <span id="hud-coord-z">Z: 6.50</span>
+          <span class="hero-hud-status">LOCK: 99.8%</span>
+        </div>
+      </div>
+
+      <!-- Landmark for 3D camera centering -->
+      <div id="hero-fit-box" class="sr-only"></div>
+
+      <div class="hero-content-layer">
+        <!-- Main Top Editorial Header -->
+        <div class="hero-main-header">
+          <div id="hero-id" class="hero-id-tag" data-reveal>
+            Computer Vision &amp; Edge AI Engineer
+          </div>
+          <h1 id="hero-name" class="hero-title-name">
+            RYAS RAFI KARIM
+          </h1>
+          <div class="hero-subtitle-role" data-hero-meta-row data-reveal>
+            <span class="hero-role-dot"></span>
+            <span>AI SYSTEMS & EDGE VISION ENGINEER</span>
+          </div>
+
+          <div class="hero-meta-bar" data-hero-meta-row data-reveal>
+            <span class="hero-meta-item">B.Eng Electrical, GPA 3.78</span>
+            <span class="hero-meta-sep">•</span>
+            <span class="hero-meta-item">Google Bangkit, top 10%</span>
+            <span class="hero-meta-sep">•</span>
+            <span class="hero-meta-item">26 tugboats, 3,000+ cameras</span>
+            <span class="hero-meta-sep">•</span>
+            <span class="hero-meta-item">Jakarta, UTC+7</span>
+          </div>
+        </div>
+
+        <!-- Floating Bottom Metrology & CTA Strip -->
+        <div class="hero-bottom-strip">
+          <div class="hero-metrics-cluster" data-hero-panels data-reveal>
+            <div class="hero-metric-unit">
+              <span class="hero-metric-figure" data-stat-figure>45 FPS</span>
+              <span class="hero-metric-label">RTSP ingest</span>
+            </div>
+            <div class="hero-metric-unit">
+              <span class="hero-metric-figure" data-stat-figure>8.2ms</span>
+              <span class="hero-metric-label">p95 latency</span>
+            </div>
+            <div class="hero-metric-unit">
+              <span class="hero-metric-figure" data-stat-figure>26</span>
+              <span class="hero-metric-label">Tugboats live</span>
+            </div>
+            <div class="hero-metric-unit">
+              <span class="hero-metric-figure" data-stat-figure>99.2%</span>
+              <span class="hero-metric-label">Plate accuracy</span>
+            </div>
+          </div>
+
+          <div class="hero-actions-row" data-hero-actions data-reveal>
+            <a href="#timeline" class="btn-chamfer">
+              <span>Explore career</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+            <button onclick="window.openDossier('sentinel')" class="btn-chamfer-dark">
+              <span>Case study</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stack-shade" data-pinned-shade></div>
+  </section>
+
+  <!-- ============================================================
+       BLOCK 2: CAREER TIMELINE
+       ============================================================ -->
+  <section id="timeline" class="section-timeline" data-timeline-section style="position: relative; z-index: 20;">
+    <div class="stack-inner">
+      <canvas class="chequered-seam-top" data-chequered-seam data-carry="light"></canvas>
+
+      <div class="systems-header-block padded-compact">
+        <div>
+          <div class="systems-sub-tag">Career timeline, 2020 to 2026</div>
+          <h2 class="systems-title-lg">Career Timeline</h2>
+        </div>
+      </div>
+
+      <div class="timeline-container">
+        <!-- Central Progress Rail SVG -->
+        <svg id="timeline-rail" class="timeline-rail-svg" viewBox="0 0 16 2668" preserveAspectRatio="none">
+          <line x1="8" y1="0" x2="8" y2="2668" stroke="var(--timeline-rail)" stroke-width="1.5" />
+          <rect id="timeline-rail-progress" x="7.25" y="0" width="1.5" height="0%" fill="var(--accent)" />
+          <rect id="timeline-rail-marker" x="-4.5" y="-4.5" width="9" height="9" fill="var(--accent)" transform="translate(8, 0)" />
+        </svg>
+
+        <!-- 7 Milestone Rows -->
+        <!-- Row 1: 2020 -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2020</div>
+            <h3 class="timeline-role-title">ELECTRICAL & EMBEDDED FOUNDATIONS</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              Enrolled at Universitas Singaperbangsa Karawang (B.Eng Electrical Engineering). Mastered analog circuitry, digital signal processing, microcontrollers (STM32, ESP32), and low-level Linux systems, graduating with GPA 3.78/4.00.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">C / C++</span>
+              <span class="tag-pill">Embedded Systems</span>
+              <span class="tag-pill">Signal Processing</span>
+              <span class="tag-pill">Linux Kernel</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('embedded')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2020.webp" alt="Circuit topology graph" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: 2022 -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2022</div>
+            <h3 class="timeline-role-title">ROBOTICS & COMPUTER VISION RESEARCH</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              Architected real-time robotics vision pipelines, sensor fusion algorithms, and convolutional neural networks for autonomous navigation and object recognition.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">OpenCV</span>
+              <span class="tag-pill">PyTorch</span>
+              <span class="tag-pill">ROS</span>
+              <span class="tag-pill">Sensor Fusion</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('robotics')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2022.webp" alt="Edge system monitor" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 3: 2023 -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2023</div>
+            <h3 class="timeline-role-title">BANGKIT ACADEMY — DISTINCTION GRADUATE</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              Selected among top 10% distinction graduates in Google, Tokopedia, Gojek, and Traveloka's Bangkit Academy. Developed Waste Wizard CNN classification model with 95% accuracy and earned Google TensorFlow Developer Certification.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">TensorFlow</span>
+              <span class="tag-pill">Google Cloud GCP</span>
+              <span class="tag-pill">Keras</span>
+              <span class="tag-pill">Model Serving</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('bangkit')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2023.webp" alt="Bangkit schematic inspection" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: 2024 -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2024</div>
+            <h3 class="timeline-role-title">AUTONOMOUS CAD BOQ EXTRACTION</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              Engineered full-stack computer vision pipelines parsing architectural blueprints, DWG/DXF drawings, and extracting engineering Bill of Quantities with 14x acceleration over manual estimation.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">PyMuPDF</span>
+              <span class="tag-pill">Vector Geometry</span>
+              <span class="tag-pill">Custom OCR</span>
+              <span class="tag-pill">FastAPI</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('cad')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2024.webp" alt="CAD BoQ Extraction" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 5: 2025 (H1) -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2025</div>
+            <h3 class="timeline-role-title">JAKARTA SMARTEYE — 3,000+ CCTV CAMERAS</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              AI Engineer at PT Bali Towerindo Sentra Tbk. Maintained, tuned, and deployed License Plate Recognition models across 3,000+ metropolitan cameras in Jakarta with 99.2% accuracy, managing three high-availability Linux production server tiers.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">YOLOv8 LPR</span>
+              <span class="tag-pill">TensorRT</span>
+              <span class="tag-pill">3,000+ CCTV Feeds</span>
+              <span class="tag-pill">Ubuntu Server</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('sentinel')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2025-a.webp" alt="Sentinel 15 CCTV grid" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 6: 2025 (H2) -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2025</div>
+            <h3 class="timeline-role-title">FLEET VISION ACROSS 26 MARINE VESSELS</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              AI Engineer & Project Lead at Gerbang Data Indonesia. Deployed commercial tugboat surveillance, Teltonika GPS telematics API, 7-module mining CV platform (AdaFace IR-101, PPE, Danger Zone Intrusion, Vehicle Hull OCR), and Nexus Annotator platform.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">Jetson Orin Nano</span>
+              <span class="tag-pill">AdaFace IR-101</span>
+              <span class="tag-pill">Teltonika API</span>
+              <span class="tag-pill">Telegram Bot</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('maritime')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2025-b.webp" alt="Maritime tugboat deployment" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 7: 2026 -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-year-huge" data-year-text>2026</div>
+            <h3 class="timeline-role-title">AUTONOMOUS EDGE & ENTERPRISE AGENTS</h3>
+            <p class="timeline-desc-text" data-copy-text>
+              Pioneering low-latency edge architectures, ONNX Runtime quantization, local-first LLM agents (Ollama, llama.cpp, Qdrant, LangGraph), and zero-frame-drop /dev/shm shared memory pipelines operating at 45 FPS and 8.2ms latency.
+            </p>
+            <div class="timeline-tech-stack">
+              <span class="tag-pill">LangGraph</span>
+              <span class="tag-pill">Qdrant Vector DB</span>
+              <span class="tag-pill">n8n Automation</span>
+              <span class="tag-pill">Zero-Drop Ramdisk</span>
+            </div>
+          </div>
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="plate-wrap" data-timeline-plate onclick="window.openDossier('turboquant')">
+              <div class="plate-shape">
+                <img src="assets/timeline/2026.webp" alt="Turboquant AI agent tool execution" class="plate-inner-img" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BLOCK 3: FIELD VIDEO CONSOLE
+       ============================================================ -->
+  <section id="paddock" class="section-field" data-field-section>
+    <canvas id="field-contour-canvas" class="contour-canvas-bg"></canvas>
+
+    <div class="field-container">
+      <div class="systems-header-block no-padding">
+        <div>
+          <div class="systems-sub-tag">Recorded from live deployments</div>
+          <h2 class="systems-title-lg">Deployments on Video</h2>
+        </div>
+      </div>
+
+      <!-- Full-Width Video Console Player -->
+      <div class="video-console">
+        <!-- Console Top Header Bar -->
+        <div class="video-console-header">
+          <div class="stream-tab-bar">
+            <button class="stream-tab-btn is-active" data-stream-tab="sentinel">Sentinel CCTV</button>
+            <button class="stream-tab-btn" data-stream-tab="maritime">Maritime 360</button>
+            <button class="stream-tab-btn" data-stream-tab="turboquant">Local LLM Agent</button>
+          </div>
+        </div>
+
+        <!-- Video Viewport (100% Unobstructed Full-Frame Screen) -->
+        <div class="video-screen-wrap">
+          <video id="field-video-player" class="video-player-element" data-src="assets/videos/sentinel-15-cctv.mp4" poster="assets/images/poster-sentinel.jpg" preload="none" loop muted playsinline></video>
+        </div>
+
+        <!-- Console Bottom Scrubber & Info Bar -->
+        <div class="video-console-footer">
+          <div class="scrubber-track">
+            <div id="field-scrubber-fill" class="scrubber-fill"></div>
+          </div>
+          <div class="video-footer-row">
+            <div class="video-footer-left">
+              <span id="field-stream-title" class="video-footer-title">SENTINEL 15-CCTV MULTI-STREAM ANALYTICS</span>
+            </div>
+            <div class="video-footer-right">
+              <span id="field-timecode" class="video-footer-timecode">00:00 / 00:00</span>
+              <span class="video-footer-status">Full Frame Edge Feed</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BLOCK 4: CORE TECH STACKS & DOMAINS (CV Aligned)
+       ============================================================ -->
+  <section id="tech-stacks" class="section-tech-stacks" data-tech-section>
+    <div class="tech-stacks-container">
+      <div class="systems-header-block no-padding">
+        <div>
+          <div class="systems-sub-tag">Core engineering domains & verified stack</div>
+          <h2 class="systems-title-lg">Tech Stacks & Domains</h2>
+        </div>
+        <div class="hide-below-lg" style="text-align: right; max-width: 32rem;">
+          <p class="systems-header-desc">
+            Production-grade competencies extracted from real-world deployments across municipal CCTV grids, 26 marine vessels, and air-gapped agent workbenches.
+          </p>
+        </div>
+      </div>
+
+      <!-- 6 Technical Domains Grid -->
+      <div class="tech-domains-grid">
+        <!-- Domain 1: Computer Vision -->
+        <div class="tech-domain-card">
+          <div class="tech-domain-header">
+            <span class="tech-domain-index">Domain 01 / Perception</span>
+            <h3 class="tech-domain-title">Computer Vision & Deep Learning</h3>
+            <p class="tech-domain-scope">High-throughput detection, segmentation, optical character recognition & biometrics.</p>
+          </div>
+          <div class="tech-domain-tags">
+            <span class="tag-pill">Python</span>
+            <span class="tag-pill">YOLOv8</span>
+            <span class="tag-pill">PyTorch</span>
+            <span class="tag-pill">TensorFlow</span>
+            <span class="tag-pill">OpenCV</span>
+            <span class="tag-pill">AdaFace IR-101</span>
+            <span class="tag-pill">ByteTrack</span>
+            <span class="tag-pill">Custom OCR</span>
+            <span class="tag-pill">Polygon Segmentation</span>
+            <span class="tag-pill">Scikit-learn</span>
+          </div>
+          <div class="tech-domain-context">
+            Production systems: 3,000+ CCTV license plate recognition (Jakarta SmartEye), 26-vessel 360 panorama bridge surveillance, and 98% waste polygon segmentation.
+          </div>
+        </div>
+
+        <!-- Domain 2: Optimization & Serving -->
+        <div class="tech-domain-card">
+          <div class="tech-domain-header">
+            <span class="tech-domain-index">Domain 02 / Inference</span>
+            <h3 class="tech-domain-title">Optimization & High-Throughput Serving</h3>
+            <p class="tech-domain-scope">Model compression, FP16/INT8 hardware compilation & low-latency RESTful APIs.</p>
+          </div>
+          <div class="tech-domain-tags">
+            <span class="tag-pill">NVIDIA TensorRT</span>
+            <span class="tag-pill">ONNX Runtime</span>
+            <span class="tag-pill">FastAPI</span>
+            <span class="tag-pill">Flask</span>
+            <span class="tag-pill">Model Serving</span>
+            <span class="tag-pill">Latency Profiling</span>
+            <span class="tag-pill">Redis Caching</span>
+            <span class="tag-pill">HLS Streaming</span>
+          </div>
+          <div class="tech-domain-context">
+            Engineered sub-10ms P95 latency pipelines decoding 15+ concurrent RTSP feeds with zero frame-dropping via Linux /dev/shm shared memory buffers.
+          </div>
+        </div>
+
+        <!-- Domain 3: Generative AI & Agents -->
+        <div class="tech-domain-card">
+          <div class="tech-domain-header">
+            <span class="tech-domain-index">Domain 03 / Agentic AI</span>
+            <h3 class="tech-domain-title">Generative AI, Agents & Vector RAG</h3>
+            <p class="tech-domain-scope">Local LLM runtimes, multi-step tool execution graphs & hybrid semantic retrieval.</p>
+          </div>
+          <div class="tech-domain-tags">
+            <span class="tag-pill">Ollama</span>
+            <span class="tag-pill">llama.cpp</span>
+            <span class="tag-pill">LangGraph</span>
+            <span class="tag-pill">LangChain</span>
+            <span class="tag-pill">Qdrant Vector DB</span>
+            <span class="tag-pill">Hybrid Dense+Sparse RRF</span>
+            <span class="tag-pill">n8n Automation</span>
+            <span class="tag-pill">Re-ranking</span>
+          </div>
+          <div class="tech-domain-context">
+            Implemented air-gapped Turboquant workbench with local privacy, OpenAI-compatible self-hosted providers, and automated prompt-to-n8n workflow graphs.
+          </div>
+        </div>
+
+        <!-- Domain 4: Edge AI & IoT Telematics -->
+        <div class="tech-domain-card">
+          <div class="tech-domain-header">
+            <span class="tech-domain-index">Domain 04 / Hardware</span>
+            <h3 class="tech-domain-title">Edge AI, Embedded & IoT Telematics</h3>
+            <p class="tech-domain-scope">On-device edge computing, satcom sensor telemetry & automated incident dispatch.</p>
+          </div>
+          <div class="tech-domain-tags">
+            <span class="tag-pill">NVIDIA Jetson Orin Nano</span>
+            <span class="tag-pill">Teltonika GPS API</span>
+            <span class="tag-pill">Linux /dev/shm Ring Buffer</span>
+            <span class="tag-pill">Telegram Bot API</span>
+            <span class="tag-pill">STM32 / ESP32</span>
+            <span class="tag-pill">Analog / Digital DSP</span>
+          </div>
+          <div class="tech-domain-context">
+            Led deployment across 26 tugboats with real-time danger zone polygon intrusion detection, satellite fleet telemetry, and 99.94% maritime mission uptime.
+          </div>
+        </div>
+
+        <!-- Domain 5: Infrastructure & Linux -->
+        <div class="tech-domain-card">
+          <div class="tech-domain-header">
+            <span class="tech-domain-index">Domain 05 / Platform</span>
+            <h3 class="tech-domain-title">Linux OS & Cloud Infrastructure</h3>
+            <p class="tech-domain-scope">Production Linux administration, containerization, CI/CD pipelines & reliability.</p>
+          </div>
+          <div class="tech-domain-tags">
+            <span class="tag-pill">Ubuntu Server</span>
+            <span class="tag-pill">Docker</span>
+            <span class="tag-pill">systemd Daemons</span>
+            <span class="tag-pill">Git & GitHub Actions</span>
+            <span class="tag-pill">CI/CD</span>
+            <span class="tag-pill">Google Cloud Platform (GCP)</span>
+            <span class="tag-pill">Intel Arc GPU</span>
+          </div>
+          <div class="tech-domain-context">
+            Managed three Linux production areas: inference services, automated deployment pipelines, and continuous real-time system health monitoring.
+          </div>
+        </div>
+
+        <!-- Domain 6: Programming & Data -->
+        <div class="tech-domain-card">
+          <div class="tech-domain-header">
+            <span class="tech-domain-index">Domain 06 / Engineering</span>
+            <h3 class="tech-domain-title">Languages & Schematic Engineering</h3>
+            <p class="tech-domain-scope">Vector graph topological parsing, scientific computing & CAD blueprint automation.</p>
+          </div>
+          <div class="tech-domain-tags">
+            <span class="tag-pill">Python</span>
+            <span class="tag-pill">C / C++</span>
+            <span class="tag-pill">Bash</span>
+            <span class="tag-pill">Pandas</span>
+            <span class="tag-pill">NumPy</span>
+            <span class="tag-pill">NetworkX (Graph Topology)</span>
+            <span class="tag-pill">PyMuPDF</span>
+            <span class="tag-pill">RESTful API Design</span>
+          </div>
+          <div class="tech-domain-context">
+            Architected autonomous CAD BoQ extraction system converting complex engineering wire-harness schematics to Bill of Quantities with 14x manual acceleration.
+          </div>
+        </div>
+      </div>
+
+      <!-- Verified Credentials & Certifications Strip -->
+      <div class="tech-certifications-bar">
+        <div class="tech-cert-title">Verified Certifications & Credentials</div>
+        <div class="tech-cert-items">
+          <span class="tech-cert-pill">Google TensorFlow Developer Certified</span>
+          <span class="tech-cert-pill">Stanford University Machine Learning (Coursera)</span>
+          <span class="tech-cert-pill">DeepLearning.AI TensorFlow: Data & Deployment</span>
+          <span class="tech-cert-pill">Dahua DHSP Video Surveillance System Engineer</span>
+          <span class="tech-cert-pill">Bangkit Academy ML Distinction Graduate (Top 10%)</span>
+          <span class="tech-cert-pill">B.Eng Electrical Engineering, GPA 3.78/4.00 (UNSIKA)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ============================================================
+       BLOCK 5: FOOTER & DIRECT CONTACT
+       ============================================================ -->
+  <footer id="contact" class="section-footer" data-footer-section>
+    <div class="footer-inner-box">
+      <canvas id="footer-contour-canvas" class="contour-canvas-bg" style="opacity: 0.6;"></canvas>
+
+      <div class="footer-top-row">
+        <div>
+          <div class="footer-cta-tag">
+            Open to AI and computer vision roles
+          </div>
+          <h2 class="footer-cta-huge">
+            Let&rsquo;s build<br /><span>something real</span>
+          </h2>
+          <div class="footer-action-buttons">
+            <a href="mailto:ryasrafikarim123@gmail.com" class="btn-chamfer">
+              <span>Email me</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+            </a>
+            <a href="Ryas_Rafi_Karim_AI_Engineer_ATS.pdf" download class="btn-chamfer-dark">
+              <span>Download CV</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-nav-col">
+          <span class="footer-col-header">Sections</span>
+          <a href="#hero" class="footer-nav-item" data-footer-nav-link>Identity</a>
+          <a href="#timeline" class="footer-nav-item" data-footer-nav-link>Career Timeline</a>
+          <a href="#paddock" class="footer-nav-item" data-footer-nav-link>Deployments on Video</a>
+          <a href="#tech-stacks" class="footer-nav-item" data-footer-nav-link>Tech Stacks</a>
+          <a href="#contact" class="footer-nav-item" data-footer-nav-link>Contact</a>
+        </div>
+
+        <div class="footer-nav-col">
+          <span class="footer-col-header">Contact</span>
+          <a href="mailto:ryasrafikarim123@gmail.com" class="footer-nav-item">ryasrafikarim123@gmail.com</a>
+          <a href="https://wa.me/6281380403298" target="_blank" rel="noopener" class="footer-nav-item">+62 813 8040 3298</a>
+          <a href="https://linkedin.com/in/ryasrafikarim" target="_blank" rel="noopener" class="footer-nav-item">linkedin.com/in/ryasrafikarim</a>
+          <a href="https://github.com/ryasrk" target="_blank" rel="noopener" class="footer-nav-item">github.com/ryasrk</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <div>
+          <span>© 2026 Ryas Rafi Karim</span>
+        </div>
+        <div>
+          <span>Jakarta, Indonesia (UTC+7)</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       TECHNICAL LIGHTBOX / MODAL
+       ============================================================ -->
+  <div id="modal-backdrop" class="modal-backdrop" role="dialog" aria-modal="true" data-lenis-prevent>
+    <div id="modal-dialog" class="modal-dialog" data-lenis-prevent>
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <div class="modal-header-meta">
+            <span id="modal-cat" class="tag-pill">Availability</span>
+            <span id="modal-subtitle" class="modal-subtitle-text">
+              PT Bali Towerindo Sentra Tbk • 3,000+ Metro Cameras
+            </span>
+          </div>
+          <h2 id="modal-title" class="modal-title-text">
+            Sentinel — 15-camera plate recognition
+          </h2>
+        </div>
+        <button id="modal-close" class="modal-close-btn" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-col-left">
+          <div class="modal-media-frame">
+            <img id="modal-img" class="modal-media-img" src="assets/images/sentinel-grid-15cctv.jpg" alt="System Artifact" />
+          </div>
+          <div id="modal-metrics" class="modal-metric-grid">
+            <!-- Populated dynamically via JS -->
+          </div>
+        </div>
+
+        <div class="modal-col-right">
+          <div class="modal-section-block">
+            <h4 class="modal-section-label">Architecture</h4>
+            <p id="modal-desc" class="modal-body-copy">
+              Production video analytics pipeline processing continuous RTSP feeds with zero frame-dropping via Linux /dev/shm shared memory buffers, TensorRT FP16 quantization, and Redis caching.
+            </p>
+          </div>
+
+          <div class="modal-section-block">
+            <h4 class="modal-section-label">Stack</h4>
+            <div id="modal-tech" class="modal-tech-wrap">
+              <!-- Tech badges -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       RESPONSIVE FULLSCREEN MENU SHEET
+       ============================================================ -->
+  <div id="menu-sheet" class="menu-sheet" data-lenis-prevent>
+    <div class="menu-sheet-header">
+      <span class="brand-mark">
+        <span class="brand-dot"></span>
+        <span>Navigation</span>
+      </span>
+      <button id="menu-sheet-close" class="modal-close-btn" aria-label="Close menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <nav class="menu-sheet-nav">
+      <a href="#hero" class="menu-sheet-link" data-sheet-link>Identity</a>
+      <a href="#timeline" class="menu-sheet-link" data-sheet-link>Career Timeline</a>
+      <a href="#paddock" class="menu-sheet-link" data-sheet-link>Deployments on Video</a>
+      <a href="#contact" class="menu-sheet-link" data-sheet-link>Contact</a>
+    </nav>
+
+    <div class="menu-sheet-footer">
+      <span>ryasrafikarim123@gmail.com</span>
+      <span>+62 813 8040 3298</span>
+    </div>
+  </div>
+
+  <!-- Application Entry Point -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
