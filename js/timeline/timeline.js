@@ -54,7 +54,7 @@ export const initTimeline = (container) => {
     const copyElement = row.querySelector("[data-copy-text]");
     const plateElement = row.querySelector("[data-timeline-plate]");
 
-    // Parallax
+    // Parallax (desktop only)
     const travelPlate = isCentre ? 20 : 60;
     const travelCopy = 110;
 
@@ -65,6 +65,10 @@ export const initTimeline = (container) => {
         from: travelPlate,
         to: -travelPlate,
         apply: (val) => {
+          if (window.innerWidth <= 768) {
+            plateLayer.style.top = "0px";
+            return;
+          }
           plateLayer.style.top = typeof val === "string" ? val : `${val}px`;
         },
       });
@@ -78,46 +82,14 @@ export const initTimeline = (container) => {
         from: travelCopy,
         to: -travelCopy,
         apply: (val) => {
+          if (window.innerWidth <= 768) {
+            copyLayer.style.top = "0px";
+            return;
+          }
           copyLayer.style.top = typeof val === "string" ? val : `${val}px`;
         },
       });
       cleanups.push(cleanupCopy);
-    }
-
-    // Year letter-by-letter reveal + settle on centre rows
-    if (yearElement) {
-      const { play: playYear } = splitReveal(yearElement, {
-        mode: "letters",
-        stagger: 26,
-        config: SPRING.YEAR,
-      });
-
-      onInView(
-        row,
-        () => {
-          playYear();
-          if (isCentre) {
-            setTimeout(() => {
-              const settleSpring = new Spring({
-                ...SPRING.YEAR_SETTLE,
-                precision: 0.001,
-                from: 1,
-              });
-              settleSpring.set(0.75);
-              let last = performance.now();
-              const tickSettle = (time) => {
-                const dt = time - last;
-                last = time;
-                const v = settleSpring.step(dt);
-                yearElement.style.opacity = `${v}`;
-                if (settleSpring.resting) unsubscribe(tickSettle);
-              };
-              subscribe(tickSettle, () => 0);
-            }, 2200);
-          }
-        },
-        "0% 0% -25% 0%",
-      );
     }
 
     // Copy block entrance
