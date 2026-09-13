@@ -583,6 +583,8 @@ export class HeroScene {
         this.smoothed.y,
         this.intro,
         this.reveal,
+        this.viewportWidth,
+        this.aspect,
       );
       if (this.headMaterial) {
         this.headMaterial.uniforms.uScanY.value = this.visionOverlay.scanY;

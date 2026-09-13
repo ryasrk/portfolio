@@ -584,8 +584,9 @@ export class HeroVisionOverlay {
     this.group.add(this.scanBeam);
   }
 
-  update(timeSeconds, parallaxX, parallaxY, introProgress, revealOpacity) {
+  update(timeSeconds, parallaxX, parallaxY, introProgress, revealOpacity, viewportWidth = 1440, aspect = 1.6) {
     const masterOpacity = Math.max(0, Math.min(1, introProgress * (revealOpacity || 1)));
+    const showCallouts = viewportWidth >= 1080 && aspect >= 1.15;
 
     // Laser sweep oscillation across face: y = -0.40 (chin) to y = +1.80 (forehead/hair)
     const sweepY = 0.70 + Math.sin(timeSeconds * 1.35) * 1.15;
@@ -642,9 +643,20 @@ export class HeroVisionOverlay {
     }
 
     // -------------------------------------------------------------
-    // Update Biometric Callouts & Reveal Animations on Laser Scan
+    // Update Biometric Callouts & Reveal Animations on Laser Scan (Responsive)
     // -------------------------------------------------------------
     this.calloutNodes.forEach((node) => {
+      if (!showCallouts) {
+        node.cardMat.opacity = 0.0;
+        node.lineMat.opacity = 0.0;
+        node.cardMesh.visible = false;
+        node.lineMesh.visible = false;
+        return;
+      }
+
+      node.cardMesh.visible = true;
+      node.lineMesh.visible = true;
+
       // In shader: features ABOVE laser (node.anchorY > sweepY) are in SCANNED state
       const distToScan = node.anchorY - sweepY;
       const isScanned = distToScan > -0.05 ? 1.0 : 0.0;
