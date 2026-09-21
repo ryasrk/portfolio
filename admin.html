@@ -636,17 +636,26 @@ window.addEventListener("beforeunload", (e) => {
 /* ---------------- init ---------------- */
 
 (async () => {
-  // 1. Probe API: /api/session memberi tahu mode (local/vercel) + auth state
+  // 1. Probe API. /api/session selalu 200 pada server baru; server lama
+  //    balas 401 (buktinya API hidup, hanya route-nya belum ada) dan
+  //    kegagalan jaringan = benar-benar offline.
   let session = null;
+  let apiAlive = false;
   try {
     const r = await fetch("/api/session", {
       headers: { "X-Admin-Token": token },
       cache: "no-store",
     });
-    if (r.ok) session = await r.json();
+    apiAlive = true; // respons apapun (200/401/404) berarti server hidup
+    if (r.ok) {
+      session = await r.json();
+    } else if (r.status === 401 || r.status === 404) {
+      // server lama: /api/session belum ada — perlakukan sebagai lokal
+      session = { ok: true, mode: "local", authenticated: false };
+    }
   } catch (_) { /* offline */ }
 
-  const online = !!session;
+  const online = apiAlive;
   serverMode = session?.mode || "local";
 
   if (online) {
@@ -687,7 +696,7 @@ window.addEventListener("beforeunload", (e) => {
       renderAll();
     }
   } catch (_) { /* biarkan kosong */ }
-  showLogin(online ? "" : "API offline — login hanya bisa saat server berjalan.");
+  showLogin("API offline — buka halaman ini lewat server (Vercel URL) atau jalankan ./start-portfolio.sh.");
 })();
 </script>
 </body>
