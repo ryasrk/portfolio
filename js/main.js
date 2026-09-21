@@ -14,6 +14,12 @@ import { initTimeline } from "./timeline/timeline.js";
 import { initFieldBlock } from "./field/field-block.js";
 import { initContourField } from "./field/contour-field.js";
 import { initModal } from "./modal.js";
+import {
+  loadContent,
+  renderTimeline,
+  renderCertificates,
+  getVideoStreams,
+} from "./content-store.js";
 
 // Always start at top
 history.scrollRestoration = "manual";
@@ -278,6 +284,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     initChequeredDissolve(c, c.dataset.carry || "light");
   });
 
+  // 5b. Dynamic Content (assets/data/content.json — managed via /admin).
+  //     If the JSON is missing/unparsable, the static HTML ships as-is.
+  let videoStreams = null;
+  try {
+    const content = await loadContent();
+    if (content) {
+      renderTimeline(document.querySelector(".timeline-container"), content);
+      renderCertificates(document.querySelector(".cert-grid"), content);
+      videoStreams = getVideoStreams(content);
+    }
+  } catch (err) {
+    console.warn("[content] render failed, static fallback:", err);
+  }
+
   // 6. Section 2: Career Timeline Stack
   const timelineSection = document.querySelector("[data-timeline-section]");
   if (timelineSection) {
@@ -287,7 +307,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 8. Section 4: Production Video & Pipeline Strip
   const fieldSection = document.querySelector("[data-field-section]");
   if (fieldSection) {
-    initFieldBlock(fieldSection);
+    initFieldBlock(fieldSection, videoStreams);
     const fieldContourCanvas = fieldSection.querySelector("#field-contour-canvas");
     if (fieldContourCanvas) {
       initContourField(fieldContourCanvas, "--field-contour");

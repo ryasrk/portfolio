@@ -1,0 +1,152 @@
+{
+  "timeline": [
+    {
+      "id": "bangkit",
+      "year": "2023",
+      "org": "Google • GoTo • Traveloka",
+      "status": "Top 10% Distinction",
+      "title": "BANGKIT ACADEMY — DISTINCTION GRADUATE",
+      "desc": "Machine Learning cohort under Google, Tokopedia, Gojek & Traveloka. Built Waste Wizard, a CNN municipal waste-classification mobile app reaching 95% validation accuracy, and earned the Google TensorFlow Developer Certificate in a top-10% graduating cohort.",
+      "tags": [
+        "TensorFlow",
+        "Keras CNN",
+        "Google Cloud GCP",
+        "Mobile Classification"
+      ],
+      "image": "assets/timeline/bangkit-academy.jpg",
+      "imageAlt": "Waste Wizard mobile waste classification app",
+      "hudTag": "ARTIFACT // WASTE-WIZARD",
+      "dossier": "bangkit"
+    },
+    {
+      "id": "smarteye",
+      "year": "2025",
+      "org": "PT Bali Towerindo Sentra Tbk",
+      "status": "3,000+ CCTV Feeds",
+      "title": "JAKARTA SMARTEYE — 3,000+ CAMERAS",
+      "desc": "AI Engineer maintaining and tuning License Plate Recognition models across 3,000+ operational Jakarta CCTV feeds at 99.2% accuracy — plus waste-segmentation and crowd analytics for the MBG program — over three high-availability Linux production tiers.",
+      "tags": [
+        "YOLOv8 LPR",
+        "TensorRT",
+        "Polygon Segmentation",
+        "Ubuntu Server"
+      ],
+      "image": "assets/timeline/jakarta-smarteye.jpg",
+      "imageAlt": "Jakarta SmartEye license plate recognition",
+      "hudTag": "ARTIFACT // SMART-EYE",
+      "dossier": "sentinel"
+    },
+    {
+      "id": "fleet",
+      "year": "2025",
+      "org": "Baramulti Group",
+      "status": "26 Marine Vessels",
+      "title": "FLEET VISION ACROSS 26 MARINE VESSELS",
+      "desc": "AI Engineer & Project Lead deploying bridge-crew surveillance across 26 commercial tugboats: 360° panorama vision, AdaFace IR-101 crew identification, danger-zone intrusion alerts, and Teltonika satellite GPS telematics with automated Telegram dispatch.",
+      "tags": [
+        "Jetson Orin Nano",
+        "AdaFace IR-101",
+        "360° Panorama",
+        "Teltonika GPS"
+      ],
+      "image": "assets/timeline/fleet-vision.jpg",
+      "imageAlt": "Fleet vision bridge monitoring on marine vessels",
+      "hudTag": "ARTIFACT // FLEET-VISION",
+      "dossier": "maritime"
+    },
+    {
+      "id": "drawing-converter",
+      "year": "2024",
+      "org": "Versigent • PT Aptiv Components Indonesia",
+      "status": "14x Acceleration",
+      "title": "DRAWING CONVERTER — WIRE-HARNESS VECTORS",
+      "desc": "Engineered the automated CAD wire-harness drawing converter: schematic parsing, vector skeletonization, and Delphi/Aptiv catalog cross-referencing that extracts terminals, seals, and BoQ tables — cutting engineering turnaround from 3 days to under 5 minutes.",
+      "tags": [
+        "OpenCV",
+        "Vector Geometry",
+        "Custom OCR",
+        "FastAPI"
+      ],
+      "image": "assets/timeline/drawing-converter.jpg",
+      "imageAlt": "Drawing converter wire-harness vector extraction",
+      "hudTag": "ARTIFACT // DRAWING-CONVERTER",
+      "dossier": "cad"
+    },
+    {
+      "id": "sentinel-hull",
+      "year": "2025",
+      "org": "PT Asmin Bara Bronang",
+      "status": "Hull OCR Live",
+      "title": "SENTINEL AI — HULL NUMBER RECOGNITION",
+      "desc": "Two-stage detection and OCR reading vessel hull numbers (No. Lambung) on dusty mining haul roads — 90,722+ tons of haulage tracked across 41 hull classes with calibrated ground-speed radar and zero-drop /dev/shm frame buffering.",
+      "tags": [
+        "YOLOv8 ONNX",
+        "Hull OCR",
+        "Ground Radar",
+        "Linux /dev/shm"
+      ],
+      "image": "assets/timeline/sentinel-hull.jpg",
+      "imageAlt": "Sentinel AI vessel hull number recognition",
+      "hudTag": "ARTIFACT // SENTINEL-HULL",
+      "dossier": "mining"
+    }
+  ],
+  "certificates": [
+    {
+      "id": "cert-1",
+      "title": "TensorFlow Developer Certificate",
+      "issuer": "Google",
+      "image": "assets/certificates/cert-1.jpg"
+    },
+    {
+      "id": "cert-2",
+      "title": "Machine Learning Specialization",
+      "issuer": "Stanford University & DeepLearning.AI",
+      "image": "assets/certificates/cert-2.jpg"
+    },
+    {
+      "id": "cert-3",
+      "title": "TensorFlow: Data and Deployment",
+      "issuer": "DeepLearning.AI & Coursera",
+      "image": "assets/certificates/cert-3.jpg"
+    },
+    {
+      "id": "cert-4",
+      "title": "DHSP Video Surveillance System Engineer",
+      "issuer": "Dahua Technology Co. LTD",
+      "image": "assets/certificates/cert-4.jpg"
+    },
+    {
+      "id": "cert-5",
+      "title": "Distinction Graduate — Top 10%",
+      "issuer": "Bangkit Academy • Google • GoTo • Traveloka",
+      "image": "assets/certificates/cert-5.jpg"
+    },
+    {
+      "id": "cert-6",
+      "title": "B.Eng Electrical Engineering — GPA 3.78/4.00",
+      "issuer": "Universitas Singaperbangsa Karawang",
+      "image": "assets/certificates/cert-6.jpg"
+    }
+  ],
+  "videos": [
+    {
+      "id": "sentinel",
+      "src": "assets/videos/sentinel-15-cctv.mp4",
+      "poster": "assets/images/poster-sentinel.jpg",
+      "title": "SENTINEL 15-CCTV MULTI-STREAM ANALYTICS"
+    },
+    {
+      "id": "maritime",
+      "src": "assets/videos/360-analytics-depth.mp4",
+      "poster": "assets/images/poster-360-analytics.jpg",
+      "title": "360 MARITIME PANORAMA & DEPTH METROLOGY"
+    },
+    {
+      "id": "turboquant",
+      "src": "assets/videos/turboquant-ai-agent.mp4",
+      "poster": "assets/images/poster-turboquant.jpg",
+      "title": "TURBOQUANT LOCAL LLM & TOOL EXECUTION AGENT"
+    }
+  ]
+}

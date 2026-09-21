@@ -89,3 +89,25 @@ npx serve .
 - **WhatsApp**: [+62 813 8040 3298](https://wa.me/6281380403298)
 - **LinkedIn**: [https://linkedin.com/in/ryasrafikarim](https://linkedin.com/in/ryasrafikarim)
 - **GitHub**: [https://github.com/ryasrk](https://github.com/ryasrk)
+
+---
+
+## 🔐 Content Admin (/admin)
+
+Kelola konten situs tanpa menyentuh kode: **`http://127.0.0.1:8080/admin.html`**
+
+### Menjalankan
+```bash
+python3 admin-server.py 8080     # situs + API admin dalam satu server
+```
+
+### Yang bisa dikelola
+- **Career Timeline** — edit tahun/organisasi/judul/deskripsi/tag, **sort ▲▼**, tambah & hapus deployment, **upload/replace gambar** (otomatis tersimpan ke `assets/timeline/`).
+- **Certificates** — tambah/edit/sort/hapus kartu, upload `cert-N.jpg` (grid 3 kolom otomatis menyesuaikan jumlah).
+- **Videos** — tambah stream baru (upload mp4/webm + poster), edit judul/path, sort tab.
+- **Raw JSON** — edit langsung `assets/data/content.json` bila diperlukan.
+
+### Cara kerja
+- Konten dinamis bersumber dari **`assets/data/content.json`** (di-render `js/content-store.js`).
+- Bila JSON tidak tersedia (mis. deploy statis tanpa API), situs **tetap tampil** memakai HTML statis bawaan.
+- API hanya menerima koneksi lokal (`127.0.0.1`), memvalidasi JSON & ekstensi file, dan menolak path traversal.

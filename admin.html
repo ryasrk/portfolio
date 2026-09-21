@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Admin — Portfolio Content Manager</title>
+<style>
+  :root {
+    --bg: #f5f5f4;
+    --panel: #ffffff;
+    --ink: #18181b;
+    --muted: #71717a;
+    --line: #e4e4e7;
+    --accent: #047857;
+    --accent-soft: rgba(4, 120, 87, 0.08);
+    --danger: #b91c1c;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  header.bar {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 1rem;
+    padding: 0.9rem 1.5rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  header.bar h1 { font-size: 1rem; margin: 0; letter-spacing: 0.02em; }
+  header.bar .status { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  header.bar .spacer { flex: 1; }
+  button, .btn {
+    font: inherit; font-size: 0.8rem; font-weight: 600;
+    padding: 0.5rem 0.9rem; border-radius: 6px;
+    border: 1px solid var(--line); background: var(--panel);
+    color: var(--ink); cursor: pointer;
+  }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.primary:disabled { opacity: 0.55; cursor: wait; }
+  button.ghost { background: transparent; }
+  button.danger { color: var(--danger); border-color: rgba(185, 28, 28, 0.3); }
+  button:hover { border-color: var(--accent); }
+  main { max-width: 1180px; margin: 0 auto; padding: 1.5rem; }
+  .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .tabs button[aria-selected="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .hint { font-size: 0.78rem; color: var(--muted); margin: 0.35rem 0 1rem; }
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 1rem;
+  }
+  .card .row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+  .card .grow { flex: 1; min-width: 200px; }
+  label { font-size: 0.72rem; font-weight: 700; color: var(--muted); display: block; margin-bottom: 0.25rem; }
+  input[type="text"], input[type="url"], textarea {
+    width: 100%; font: inherit; font-size: 0.85rem;
+    padding: 0.5rem 0.65rem; border: 1px solid var(--line);
+    border-radius: 6px; background: #fafafa;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  .thumb {
+    width: 132px; height: 92px; object-fit: cover;
+    border-radius: 6px; border: 1px solid var(--line); background: #eee;
+  }
+  .thumb.tall { height: 132px; }
+  .order-btns { display: flex; flex-direction: column; gap: 0.3rem; }
+  .order-btns button { padding: 0.25rem 0.5rem; font-size: 0.72rem; }
+  .pill {
+    font-family: var(--mono); font-size: 0.68rem; padding: 0.15rem 0.5rem;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: 999px; border: 1px solid rgba(4,120,87,0.2);
+  }
+  .add-video { display: grid; gap: 0.6rem; grid-template-columns: 1fr 1fr; }
+  .add-video .full { grid-column: 1 / -1; }
+  @media (max-width: 700px) { .add-video { grid-template-columns: 1fr; } }
+  .toast {
+    position: fixed; left: 50%; bottom: 1.5rem; transform: translateX(-50%);
+    background: var(--ink); color: #fff; font-size: 0.8rem;
+    padding: 0.6rem 1.1rem; border-radius: 8px; opacity: 0;
+    transition: opacity 0.25s; pointer-events: none; z-index: 100;
+  }
+  .toast.show { opacity: 1; }
+  details.jsonbox { margin-top: 1.5rem; }
+  details.jsonbox textarea { min-height: 320px; font-family: var(--mono); font-size: 0.75rem; }
+  a.viewlink { font-size: 0.8rem; color: var(--accent); }
+</style>
+</head>
+<body>
+<header class="bar">
+  <h1>Portfolio Admin</h1>
+  <span class="status" id="api-status">checking API…</span>
+  <span class="spacer"></span>
+  <a class="viewlink" href="/" target="_blank">View site ↗</a>
+  <button id="save-all" class="primary">Save changes</button>
+</header>
+
+<main>
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="timeline">Career Timeline</button>
+    <button role="tab" aria-selected="false" data-tab="certificates">Certificates</button>
+    <button role="tab" aria-selected="false" data-tab="videos">Videos</button>
+  </div>
+
+  <!-- ================= TIMELINE ================= -->
+  <section class="panel active" data-panel="timeline">
+    <p class="hint">Urutan kartu = urutan tampil di situs. Gunakan ▲▼ untuk sort, ganti gambar via <b>Replace image</b>.</p>
+    <div id="timeline-list"></div>
+    <button id="add-timeline" class="ghost">+ Add deployment</button>
+  </section>
+
+  <!-- ================= CERTIFICATES ================= -->
+  <section class="panel" data-panel="certificates">
+    <p class="hint">Grid 3 kolom tetap; jumlah kartu bebas. Nama file cert-N.jpg — atau upload file baru.</p>
+    <div id="certs-list"></div>
+    <button id="add-cert" class="ghost">+ Add certificate</button>
+  </section>
+
+  <!-- ================= VIDEOS ================= -->
+  <section class="panel" data-panel="videos">
+    <p class="hint">Stream tab pada bagian Deployments. Upload video (mp4/webm) + poster (jpg) atau tempel path yang sudah ada di repo.</p>
+    <div id="videos-list"></div>
+    <details class="card" style="margin-top:1rem">
+      <summary style="cursor:pointer;font-weight:700;font-size:0.85rem">+ Add video stream</summary>
+      <div class="add-video" style="margin-top:0.8rem">
+        <div><label>Title (untuk tab & footer player)</label><input type="text" id="v-title" placeholder="SENTINEL 15-CCTV ANALYTICS" /></div>
+        <div><label>Tab label (pendek)</label><input type="text" id="v-tab" placeholder="Sentinel CCTV" /></div>
+        <div class="full"><label>Video path — upload baru atau isi manual</label>
+          <div class="row">
+            <input type="text" id="v-src" class="grow" placeholder="assets/videos/nama-video.mp4" />
+            <input type="file" id="v-file" accept="video/mp4,video/webm" />
+          </div>
+        </div>
+        <div class="full"><label>Poster path (opsional)</label>
+          <div class="row">
+            <input type="text" id="v-poster" class="grow" placeholder="assets/images/poster-nama.jpg" />
+            <input type="file" id="v-poster-file" accept="image/*" />
+          </div>
+        </div>
+        <div class="full"><button id="add-video" class="primary">Add stream</button></div>
+      </div>
+    </details>
+  </section>
+
+  <details class="jsonbox">
+    <summary style="cursor:pointer;font-size:0.8rem;color:var(--muted)">Raw content.json</summary>
+    <textarea id="raw-json" spellcheck="false"></textarea>
+    <div class="row" style="margin-top:0.5rem">
+      <button id="apply-raw" class="ghost">Apply raw JSON</button>
+    </div>
+  </details>
+</main>
+
+<div id="toast" class="toast"></div>
+
+<script type="module">
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s ?? "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+
+let data = { timeline: [], certificates: [], videos: [] };
+let dirty = false;
+
+const toast = (msg) => {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2200);
+};
+
+const markDirty = () => { dirty = true; };
+
+/* ---------------- API ---------------- */
+
+async function apiHealth() {
+  try {
+    const r = await fetch("/api/health", { cache: "no-store" });
+    return r.ok;
+  } catch { return false; }
+}
+
+async function loadContent() {
+  const r = await fetch("/api/content", { cache: "no-store" });
+  if (!r.ok) throw new Error("content.json tidak dapat dibaca (" + r.status + ")");
+  data = await r.json();
+  for (const k of ["timeline", "certificates", "videos"]) {
+    if (!Array.isArray(data[k])) data[k] = [];
+  }
+}
+
+async function saveContent() {
+  const r = await fetch("/api/content", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data, null, 2),
+  });
+  if (!r.ok) throw new Error((await r.json()).error || "gagal menyimpan");
+  dirty = false;
+}
+
+async function uploadFile(target, file) {
+  const fd = new FormData();
+  fd.append("target", target);
+  fd.append("file", file, file.name);
+  const r = await fetch("/api/upload", { method: "POST", body: fd });
+  if (!r.ok) throw new Error((await r.json()).error || "upload gagal");
+  const out = await r.json();
+  return out.files?.[0];
+}
+
+/* ---------------- Timeline ---------------- */
+
+function timelineCard(item, i) {
+  const el = document.createElement("div");
+  el.className = "card";
+  el.innerHTML = `
+    <div class="row">
+      <div class="order-btns">
+        <button data-act="up" title="Naik">▲</button>
+        <button data-act="down" title="Turun">▼</button>
+      </div>
+      <img class="thumb" src="${esc(item.image)}" alt="" onerror="this.style.opacity=.25" />
+      <div class="grow">
+        <div class="row">
+          <div style="flex:1;min-width:110px">
+            <label>Tahun</label>
+            <input type="text" data-f="year" value="${esc(item.year)}" />
+          </div>
+          <div style="flex:2;min-width:180px">
+            <label>Organisasi</label>
+            <input type="text" data-f="org" value="${esc(item.org)}" />
+          </div>
+          <div style="flex:2;min-width:150px">
+            <label>Status badge</label>
+            <input type="text" data-f="status" value="${esc(item.status)}" />
+          </div>
+        </div>
+      </div>
+      <span class="pill">#${i + 1}</span>
+      <button data-act="del" class="danger">✕</button>
+    </div>
+    <div style="margin-top:0.7rem">
+      <label>Judul</label>
+      <input type="text" data-f="title" value="${esc(item.title)}" />
+    </div>
+    <div style="margin-top:0.7rem">
+      <label>Deskripsi</label>
+      <textarea data-f="desc">${esc(item.desc)}</textarea>
+    </div>
+    <div class="row" style="margin-top:0.7rem">
+      <div class="grow">
+        <label>Tag (pisahkan dengan koma)</label>
+        <input type="text" data-f="tags" value="${esc((item.tags || []).join(", "))}" />
+      </div>
+      <div>
+        <label>Dossier key</label>
+        <input type="text" data-f="dossier" value="${esc(item.dossier)}" style="width:140px" />
+      </div>
+    </div>
+    <div class="row" style="margin-top:0.7rem">
+      <div class="grow">
+        <label>Gambar (path)</label>
+        <input type="text" data-f="image" value="${esc(item.image)}" />
+      </div>
+      <label class="btn" style="align-self:end">
+        Replace image
+        <input type="file" accept="image/*" data-upload="timeline" hidden />
+      </label>
+    </div>
+  `;
+
+  // field bindings
+  $$("[data-f]", el).forEach((inp) => {
+    inp.addEventListener("input", () => {
+      const f = inp.dataset.f;
+      if (f === "tags") item.tags = inp.value.split(",").map((s) => s.trim()).filter(Boolean);
+      else item[f] = inp.value;
+      markDirty();
+    });
+  });
+
+  // upload binding
+  const up = $('[data-upload]', el);
+  up?.addEventListener("change", async () => {
+    const file = up.files[0];
+    if (!file) return;
+    try {
+      const path = await uploadFile("timeline", file);
+      item.image = path;
+      $(".thumb", el).src = path;
+      $('[data-f="image"]', el).value = path;
+      markDirty();
+      toast("Gambar terupload: " + path);
+    } catch (e) { toast("⚠ " + e.message); }
+  });
+
+  // order + delete
+  $("[data-act='up']", el).onclick = () => move(data.timeline, i, -1);
+  $("[data-act='down']", el).onclick = () => move(data.timeline, i, +1);
+  $("[data-act='del']", el).onclick = () => {
+    if (confirm("Hapus deployment ini?")) { data.timeline.splice(i, 1); markDirty(); renderAll(); }
+  };
+  return el;
+}
+
+/* ---------------- Certificates ---------------- */
+
+function certCard(item, i) {
+  const el = document.createElement("div");
+  el.className = "card";
+  el.innerHTML = `
+    <div class="row">
+      <div class="order-btns">
+        <button data-act="up" title="Naik">▲</button>
+        <button data-act="down" title="Turun">▼</button>
+      </div>
+      <img class="thumb tall" src="${esc(item.image)}" alt="" onerror="this.style.opacity=.25" />
+      <div class="grow">
+        <label>Judul</label>
+        <input type="text" data-f="title" value="${esc(item.title)}" />
+        <div style="height:0.5rem"></div>
+        <label>Penerbit</label>
+        <input type="text" data-f="issuer" value="${esc(item.issuer)}" />
+      </div>
+      <span class="pill">CERT-${String(i + 1).padStart(2, "0")}</span>
+      <button data-act="del" class="danger">✕</button>
+    </div>
+    <div class="row" style="margin-top:0.7rem">
+      <div class="grow">
+        <label>Gambar (path)</label>
+        <input type="text" data-f="image" value="${esc(item.image)}" />
+      </div>
+      <label class="btn" style="align-self:end">
+        Replace image
+        <input type="file" accept="image/*" data-upload="certificates" hidden />
+      </label>
+    </div>
+  `;
+
+  $$("[data-f]", el).forEach((inp) => {
+    inp.addEventListener("input", () => { item[inp.dataset.f] = inp.value; markDirty(); });
+  });
+  const up = $('[data-upload]', el);
+  up?.addEventListener("change", async () => {
+    const file = up.files[0];
+    if (!file) return;
+    try {
+      const path = await uploadFile("certificates", file);
+      item.image = path;
+      $(".thumb", el).src = path;
+      $('[data-f="image"]', el).value = path;
+      markDirty();
+      toast("Sertifikat terupload: " + path);
+    } catch (e) { toast("⚠ " + e.message); }
+  });
+  $("[data-act='up']", el).onclick = () => move(data.certificates, i, -1);
+  $("[data-act='down']", el).onclick = () => move(data.certificates, i, +1);
+  $("[data-act='del']", el).onclick = () => {
+    if (confirm("Hapus sertifikat ini?")) { data.certificates.splice(i, 1); markDirty(); renderAll(); }
+  };
+  return el;
+}
+
+/* ---------------- Videos ---------------- */
+
+function videoCard(item, i) {
+  const el = document.createElement("div");
+  el.className = "card";
+  el.innerHTML = `
+    <div class="row">
+      <div class="order-btns">
+        <button data-act="up" title="Naik">▲</button>
+        <button data-act="down" title="Turun">▼</button>
+      </div>
+      <img class="thumb" src="${esc(item.poster)}" alt="" onerror="this.style.opacity=.25" />
+      <div class="grow">
+        <label>Title</label>
+        <input type="text" data-f="title" value="${esc(item.title)}" />
+        <div style="height:0.5rem"></div>
+        <div class="row">
+          <div class="grow"><label>Video path</label><input type="text" data-f="src" value="${esc(item.src)}" /></div>
+          <label class="btn" style="align-self:end">Replace video<input type="file" accept="video/*" data-upload="videos" hidden /></label>
+        </div>
+        <div class="row" style="margin-top:0.5rem">
+          <div class="grow"><label>Poster path</label><input type="text" data-f="poster" value="${esc(item.poster)}" /></div>
+          <label class="btn" style="align-self:end">Replace poster<input type="file" accept="image/*" data-upload="posters" hidden /></label>
+        </div>
+      </div>
+      <span class="pill">#${i + 1}</span>
+      <button data-act="del" class="danger">✕</button>
+    </div>
+  `;
+
+  $$("[data-f]", el).forEach((inp) => {
+    inp.addEventListener("input", () => { item[inp.dataset.f] = inp.value; markDirty(); });
+  });
+  $$("[data-upload]", el).forEach((up) => {
+    up.addEventListener("change", async () => {
+      const file = up.files[0];
+      if (!file) return;
+      const target = up.dataset.upload === "posters" ? "images" : "videos";
+      try {
+        const path = await uploadFile(target, file);
+        if (up.dataset.upload === "posters") { item.poster = path; $('[data-f="poster"]', el).value = path; $(".thumb", el).src = path; }
+        else { item.src = path; $('[data-f="src"]', el).value = path; }
+        markDirty();
+        toast("File terupload: " + path);
+      } catch (e) { toast("⚠ " + e.message); }
+    });
+  });
+  $("[data-act='up']", el).onclick = () => move(data.videos, i, -1);
+  $("[data-act='down']", el).onclick = () => move(data.videos, i, +1);
+  $("[data-act='del']", el).onclick = () => {
+    if (confirm("Hapus stream ini?")) { data.videos.splice(i, 1); markDirty(); renderAll(); }
+  };
+  return el;
+}
+
+/* ---------------- order / render ---------------- */
+
+function move(arr, i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= arr.length) return;
+  [arr[i], arr[j]] = [arr[j], arr[i]];
+  markDirty();
+  renderAll();
+}
+
+function renderAll() {
+  const tl = $("#timeline-list"); tl.innerHTML = "";
+  data.timeline.forEach((item, i) => tl.appendChild(timelineCard(item, i)));
+  const cl = $("#certs-list"); cl.innerHTML = "";
+  data.certificates.forEach((item, i) => cl.appendChild(certCard(item, i)));
+  const vl = $("#videos-list"); vl.innerHTML = "";
+  data.videos.forEach((item, i) => vl.appendChild(videoCard(item, i)));
+  $("#raw-json").value = JSON.stringify(data, null, 2);
+}
+
+/* ---------------- tabs ---------------- */
+
+$$(".tabs [data-tab]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    $$(".tabs [data-tab]").forEach((b) => b.setAttribute("aria-selected", b === btn));
+    $$(".panel").forEach((p) => p.classList.toggle("active", p.dataset.panel === btn.dataset.tab));
+  });
+});
+
+/* ---------------- add buttons ---------------- */
+
+$("#add-timeline").onclick = () => {
+  data.timeline.push({
+    id: "new-" + Date.now(),
+    year: String(new Date().getFullYear()),
+    org: "", status: "", title: "NEW DEPLOYMENT",
+    desc: "", tags: [], image: "assets/timeline/new-deployment.jpg",
+    imageAlt: "", hudTag: "ARTIFACT // NEW", dossier: "",
+  });
+  markDirty(); renderAll();
+  $("#timeline-list").lastElementChild.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+$("#add-cert").onclick = () => {
+  data.certificates.push({
+    id: "cert-" + (data.certificates.length + 1),
+    title: "New Certificate", issuer: "",
+    image: "assets/certificates/cert-" + (data.certificates.length + 1) + ".jpg",
+  });
+  markDirty(); renderAll();
+};
+
+$("#add-video").onclick = async () => {
+  const title = $("#v-title").value.trim();
+  const src = $("#v-src").value.trim();
+  if (!title || !src) return toast("⚠ Title dan video path wajib");
+  const stream = { id: "stream-" + Date.now(), src, poster: $("#v-poster").value.trim(), title, tab: $("#v-tab").value.trim() };
+
+  // optional new uploads override paths
+  const vf = $("#v-file").files[0];
+  if (vf) stream.src = await uploadFile("videos", vf);
+  const pf = $("#v-poster-file").files[0];
+  if (pf) stream.poster = await uploadFile("images", pf);
+
+  data.videos.push(stream);
+  markDirty(); renderAll();
+  $("#v-title").value = $("#v-src").value = $("#v-poster").value = $("#v-tab").value = "";
+  $("#v-file").value = $("#v-poster-file").value = "";
+  toast("Stream ditambahkan");
+};
+
+/* ---------------- save / raw ---------------- */
+
+$("#save-all").onclick = async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  try {
+    await saveContent();
+    toast("Tersimpan ✓ — refresh situs untuk melihat");
+  } catch (err) {
+    toast("⚠ " + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+$("#apply-raw").onclick = () => {
+  try {
+    data = JSON.parse($("#raw-json").value);
+    renderAll();
+    markDirty();
+    toast("JSON diterapkan — jangan lupa Save");
+  } catch (e) { toast("⚠ JSON tidak valid: " + e.message); }
+};
+
+window.addEventListener("beforeunload", (e) => {
+  if (dirty) { e.preventDefault(); e.returnValue = ""; }
+});
+
+/* ---------------- init ---------------- */
+
+(async () => {
+  const ok = await apiHealth();
+  $("#api-status").textContent = ok
+    ? "API connected — changes save to disk"
+    : "API offline — jalankan: python3 admin-server.py";
+  $("#api-status").style.color = ok ? "var(--accent)" : "var(--danger)";
+  try {
+    await loadContent();
+    renderAll();
+  } catch (e) {
+    toast("⚠ " + e.message);
+  }
+})();
+</script>
+</body>
+</html>

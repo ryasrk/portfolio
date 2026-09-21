@@ -9,7 +9,20 @@ import { onInView, splitReveal } from "../motion/text-reveal.js";
 import { Spring, SPRING } from "../motion/spring.js";
 import { subscribe, unsubscribe } from "../motion/ticker.js";
 
-export const initFieldBlock = (container) => {
+const escAttr = (s) =>
+  String(s ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+/** "SENTINEL 15-CCTV MULTI-STREAM ANALYTICS" -> "Sentinel CCTV" style label */
+const shortTabLabel = (title) => {
+  const words = String(title || "").split(/[\s—-]+/).filter(Boolean);
+  return words.slice(0, 2).join(" ") || "Stream";
+};
+
+export const initFieldBlock = (container, dynamicStreams = null) => {
   if (!container) return () => {};
 
   const videoElement = container.querySelector("#field-video-player");
@@ -17,8 +30,9 @@ export const initFieldBlock = (container) => {
   const scrubberFill = container.querySelector("#field-scrubber-fill");
   const timecodeDisplay = container.querySelector("#field-timecode");
 
-  // Video Matrix Stream Switcher
-  const streams = [
+  // Video Matrix Stream Switcher — static defaults, overridden by
+  // assets/data/content.json when the /admin content store provides streams.
+  const staticStreams = [
     {
       id: "sentinel",
       src: "assets/videos/sentinel-15-cctv.mp4",
@@ -41,6 +55,22 @@ export const initFieldBlock = (container) => {
       aspectRatio: "1904 / 862",
     },
   ];
+
+  const streams =
+    dynamicStreams && dynamicStreams.length ? dynamicStreams : staticStreams;
+
+  // Sync tab buttons with the stream list (count may differ from static HTML).
+  const tabBar = tabButtons[0]?.parentElement;
+  if (tabBar && streams.length !== tabButtons.length) {
+    tabBar.innerHTML = streams
+      .map(
+        (s, i) =>
+          `<button class="stream-tab-btn${i === 0 ? " is-active" : ""}" data-stream-tab="${escAttr(s.id || i)}">${escAttr(shortTabLabel(s.title))}</button>`,
+      )
+      .join("");
+    tabButtons.length = 0;
+    tabBar.querySelectorAll("[data-stream-tab]").forEach((b) => tabButtons.push(b));
+  }
 
   let currentStreamIndex = 0;
 
@@ -76,6 +106,8 @@ export const initFieldBlock = (container) => {
     if (streams[0].aspectRatio) {
       videoElement.style.aspectRatio = streams[0].aspectRatio;
     }
+    const titleEl0 = container.querySelector("#field-stream-title");
+    if (titleEl0) titleEl0.textContent = streams[0].title;
 
     videoElement.addEventListener("loadedmetadata", () => {
       if (videoElement.videoWidth && videoElement.videoHeight) {
