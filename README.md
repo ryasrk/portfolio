@@ -92,14 +92,27 @@ npx serve .
 
 ---
 
-## 🔐 Content Admin (/admin)
+## 🔐 Content Admin (/admin) — Password Protected
 
 Kelola konten situs tanpa menyentuh kode: **`http://127.0.0.1:8080/admin.html`**
 
-### Menjalankan
+### Menjalankan (satu command — API pasti online)
 ```bash
-python3 admin-server.py 8080     # situs + API admin dalam satu server
+./start-portfolio.sh             # situs + admin API, health-checked
+./start-portfolio.sh 9000        # custom port
 ```
+Launcher otomatis mematikan instance lama di port yang sama, men-start server,
+dan menunggu `/api/health` OK sebelum melapor sukses.
+
+### Password
+| Kredensial | Nilai | Fungsi |
+|---|---|---|
+| Login admin | `Ryas4321` | masuk ke dashboard /admin.html |
+| API token | `Ryas4312` | header `X-Admin-Token` / `Bearer` untuk /api/* |
+
+Keduanya saling diterima (login dengan salah satu valid, token keduanya valid).
+Seluruh endpoint `/api/*` (kecuali `/api/health`) menuntut token; situs publik
+tetap terbuka untuk pengunjung.
 
 ### Yang bisa dikelola
 - **Career Timeline** — edit tahun/organisasi/judul/deskripsi/tag, **sort ▲▼**, tambah & hapus deployment, **upload/replace gambar** (otomatis tersimpan ke `assets/timeline/`).
