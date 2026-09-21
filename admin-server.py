@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
 """
-Portfolio Admin Server.
+Portfolio Admin Server — situs + API dalam satu bundle.
 
-Serves the portfolio site AND a small local-only API used by /admin:
+  GET  /                     -> static hosting (index.html, assets, dst.)
+  POST /api/login            -> {"password": "..."} -> token session (admin)
+  GET  /api/health           -> {"ok": true}              (terbuka)
+  GET  /api/content          -> assets/data/content.json   (admin)
+  POST /api/content          -> tulis content.json         (admin)
+  POST /api/upload           -> multipart upload           (admin)
+  POST /api/upload-video/... -> raw upload video/poster    (admin)
 
-  GET  /                     -> index.html (static hosting, like http.server)
-  GET  /api/content          -> assets/data/content.json
-  POST /api/content          -> replace assets/data/content.json (JSON body)
-  POST /api/upload           -> multipart upload: field "file", "target" in
-                                {timeline, certificates, videos, images}
-  GET  /api/health           -> {"ok": true}
+Proteksi: /admin.html dan seluruh /api/* (kecuali /api/health) menuntut
+header X-Admin-Token / Authorization: Bearer yang cocok dengan salah satu
+password terdaftar. Situs publik TIDAK diproteksi.
 
-Run:  python3 admin-server.py [port]     (default 8080, binds 127.0.0.1)
+Run:  ./start-portfolio.sh          (recommended — auto port + health check)
+      python3 admin-server.py [port]   (default 8080, bind 127.0.0.1)
 """
 
+import hmac
 import json
 import mimetypes
 import re
 import sys
-import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
@@ -37,7 +41,11 @@ ALLOWED_EXT = {
     "videos": {".mp4", ".webm", ".mov"},
     "images": {".jpg", ".jpeg", ".png", ".webp", ".avif"},
 }
-MAX_UPLOAD = 512 * 1024 * 1024  # 512 MB, videos can be large
+MAX_UPLOAD = 512 * 1024 * 1024  # 512 MB
+
+# Admin credentials — salah satu dari password ini valid sebagai token.
+# (Ryas4321 = akses admin, Ryas4312 = token API; keduanya saling menerima.)
+ADMIN_PASSWORDS = ("Ryas4321", "Ryas4312")
 
 MIME_OVERRIDES = {
     ".js": "text/javascript",
@@ -60,8 +68,14 @@ def safe_name(name: str) -> str:
     return f"{stem}{ext}"
 
 
+def token_ok(token: str) -> bool:
+    if not token:
+        return False
+    return any(hmac.compare_digest(token, p) for p in ADMIN_PASSWORDS)
+
+
 class AdminHandler(BaseHTTPRequestHandler):
-    server_version = "PortfolioAdmin/1.0"
+    server_version = "PortfolioAdmin/1.1"
 
     # ---------------- helpers ----------------
 
@@ -76,10 +90,22 @@ class AdminHandler(BaseHTTPRequestHandler):
     def _json(self, code: int, obj: dict):
         self._send(code, json.dumps(obj).encode(), "application/json")
 
+    def _token(self) -> str:
+        auth = self.headers.get("Authorization") or ""
+        if auth.startswith("Bearer "):
+            return auth[7:].strip()
+        return (self.headers.get("X-Admin-Token") or "").strip()
+
+    def _authorized(self) -> bool:
+        return token_ok(self._token())
+
     def _serve_static(self, url_path: str):
         path = unquote(urlparse(url_path).path)
         if path in ("/", ""):
             path = "/index.html"
+
+        # /admin.html itself is served (inert without data); the actual
+        # protection is the token gate on every /api/* endpoint below.
         file_path = (ROOT / path.lstrip("/")).resolve()
 
         # Path traversal guard
@@ -101,14 +127,33 @@ class AdminHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         if parsed.path == "/api/health":
             return self._json(200, {"ok": True})
-        if parsed.path == "/api/content":
-            if CONTENT_FILE.is_file():
-                return self._send(200, CONTENT_FILE.read_bytes(), "application/json")
-            return self._json(404, {"ok": False, "error": "content.json missing"})
+        if parsed.path.startswith("/api/"):
+            if not self._authorized():
+                return self._json(401, {"ok": False, "error": "unauthorized — X-Admin-Token required"})
+            if parsed.path == "/api/content":
+                if CONTENT_FILE.is_file():
+                    return self._send(200, CONTENT_FILE.read_bytes(), "application/json")
+                return self._json(404, {"ok": False, "error": "content.json missing"})
+            return self._json(404, {"ok": False, "error": "unknown endpoint"})
         return self._serve_static(parsed.path)
 
     def do_POST(self):
         parsed = urlparse(self.path)
+
+        if parsed.path == "/api/login":
+            length = int(self.headers.get("Content-Length") or 0)
+            try:
+                body = json.loads(self.rfile.read(length).decode("utf-8") or "{}")
+            except Exception:
+                return self._json(400, {"ok": False, "error": "invalid JSON"})
+            password = str(body.get("password") or "")
+            if token_ok(password):
+                return self._json(200, {"ok": True, "token": password})
+            return self._json(401, {"ok": False, "error": "password salah"})
+
+        # Everything below requires admin auth
+        if not self._authorized():
+            return self._json(401, {"ok": False, "error": "unauthorized — X-Admin-Token required"})
 
         if parsed.path == "/api/content":
             length = int(self.headers.get("Content-Length") or 0)
@@ -120,7 +165,6 @@ class AdminHandler(BaseHTTPRequestHandler):
             except Exception as e:
                 return self._json(400, {"ok": False, "error": f"invalid JSON: {e}"})
 
-            # Basic shape validation
             for key in ("timeline", "certificates", "videos"):
                 if not isinstance(data.get(key), list):
                     return self._json(400, {"ok": False, "error": f"'{key}' must be a list"})
@@ -133,7 +177,7 @@ class AdminHandler(BaseHTTPRequestHandler):
 
         if parsed.path == "/api/upload":
             return self._handle_upload()
-        if parsed.path == "/api/upload-video":
+        if parsed.path.startswith("/api/upload-video/"):
             return self._handle_upload_video()
 
         return self._json(404, {"ok": False, "error": "unknown endpoint"})
