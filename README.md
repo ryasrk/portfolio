@@ -114,6 +114,29 @@ Keduanya saling diterima (login dengan salah satu valid, token keduanya valid).
 Seluruh endpoint `/api/*` (kecuali `/api/health`) menuntut token; situs publik
 tetap terbuka untuk pengunjung.
 
+### Deploy di Vercel (tanpa run apa pun)
+
+API berjalan sebagai **Vercel Serverless Functions** (`api/index.py`) — ikut
+ter-deploy bersama repo, tidak perlu server proses terpisah:
+
+1. Push repo ini ke GitHub (sudah).
+2. Di Vercel: **Add New → Project → import `ryasrk/portfolio`**, framework =
+   **Other**, tanpa build command.
+3. Set **Environment Variable** (Project → Settings → Environment Variables):
+   - `GITHUB_TOKEN` = GitHub token dengan scope **repo** (buat di
+     github.com → Settings → Developer settings → Personal access tokens).
+   - opsional: `GITHUB_REPO` (default `ryasrk/portfolio`), `GITHUB_BRANCH`
+     (default `main`).
+4. Deploy. Admin: `https://<domain>.vercel.app/admin.html`.
+
+**Cara kerja di Vercel:** tombol *Save* di admin menulis `content.json`
+sebagai **commit GitHub** (via Contents API) → Vercel mendeteksi push dan
+**redeploy otomatis ±1 menit**. Upload gambar/video via web dinonaktifkan di
+mode Vercel (limit body 4 MB) — tambahkan file langsung ke repo, atau pakai
+mode lokal `./start-portfolio.sh` untuk upload. Jika `GITHUB_TOKEN` belum
+di-set, API tetap online (login & edit berfungsi) dan menampilkan pesan yang
+jelas saat save.
+
 ### Yang bisa dikelola
 - **Career Timeline** — edit tahun/organisasi/judul/deskripsi/tag, **sort ▲▼**, tambah & hapus deployment, **upload/replace gambar** (otomatis tersimpan ke `assets/timeline/`).
 - **Certificates** — tambah/edit/sort/hapus kartu, upload `cert-N.jpg` (grid 3 kolom otomatis menyesuaikan jumlah).
