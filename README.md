@@ -129,13 +129,13 @@ ter-deploy bersama repo, tidak perlu server proses terpisah:
      (default `main`).
 4. Deploy. Admin: `https://<domain>.vercel.app/admin.html`.
 
-**Cara kerja di Vercel:** tombol *Save* di admin menulis `content.json`
-sebagai **commit GitHub** (via Contents API) → Vercel mendeteksi push dan
-**redeploy otomatis ±1 menit**. Upload gambar/video via web dinonaktifkan di
-mode Vercel (limit body 4 MB) — tambahkan file langsung ke repo, atau pakai
-mode lokal `./start-portfolio.sh` untuk upload. Jika `GITHUB_TOKEN` belum
-di-set, API tetap online (login & edit berfungsi) dan menampilkan pesan yang
-jelas saat save.
+**Cara kerja di Vercel:** tombol *Save* menulis `content.json` dan
+**/api/upload-image** meng-commit gambar (maks 4 MB, jpg/png/webp/avif) ke
+repo via GitHub Contents API → Vercel mendeteksi push dan **redeploy otomatis
+±1 menit**. Satu jalur upload untuk semua gambar (timeline, sertifikat,
+poster video). File video (mp4/webm) di-commit manual ke `assets/videos/`
+karena melebihi limit body 4 MB. Jika `GITHUB_TOKEN` belum di-set, API tetap
+online (login & edit berfungsi) dan menampilkan pesan yang jelas saat save.
 
 ### Yang bisa dikelola
 - **Career Timeline** — edit tahun/organisasi/judul/deskripsi/tag, **sort ▲▼**, tambah & hapus deployment, **upload/replace gambar** (otomatis tersimpan ke `assets/timeline/`).

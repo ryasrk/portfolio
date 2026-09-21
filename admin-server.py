@@ -41,6 +41,9 @@ ALLOWED_EXT = {
     "videos": {".mp4", ".webm", ".mov"},
     "images": {".jpg", ".jpeg", ".png", ".webp", ".avif"},
 }
+# /api/upload-image — gambar-only (video di-commit manual ke repo)
+IMAGE_EXT = {".jpg", ".jpeg", ".png", ".webp", ".avif"}
+IMAGE_DIRS = ("timeline", "certificates", "images")
 MAX_UPLOAD = 512 * 1024 * 1024  # 512 MB
 
 # Admin credentials — salah satu dari password ini valid sebagai token.
@@ -185,36 +188,17 @@ class AdminHandler(BaseHTTPRequestHandler):
             )
             return self._json(200, {"ok": True, "path": str(CONTENT_FILE.relative_to(ROOT))})
 
-        if parsed.path == "/api/upload":
-            return self._handle_upload()
-        if parsed.path.startswith("/api/upload-video/"):
-            return self._handle_upload_video()
+        if parsed.path == "/api/upload-image":
+            return self._handle_upload_image()
 
         return self._json(404, {"ok": False, "error": "unknown endpoint"})
 
-    def _handle_upload_video(self):
-        """Single-file raw upload: /api/upload-video/<videos|images>/<filename>"""
-        m = re.match(r"^/api/upload-video/(videos|images)/(.+)$", urlparse(self.path).path)
-        if not m:
-            return self._json(400, {"ok": False, "error": "bad upload path"})
-        target, filename = m.group(1), safe_name(m.group(2))
-        ext = Path(filename).suffix.lower()
-        if ext not in ALLOWED_EXT[target]:
-            return self._json(415, {"ok": False, "error": f"extension {ext} not allowed in {target}"})
+    def _handle_upload_image(self):
+        """POST /api/upload-image — gambar-only (parity dengan api/upload-image.py).
 
-        length = int(self.headers.get("Content-Length") or 0)
-        if length > MAX_UPLOAD:
-            return self._json(413, {"ok": False, "error": "file too large"})
-        data = self.rfile.read(length)
-
-        dest_dir = UPLOAD_DIRS[target]
-        dest_dir.mkdir(parents=True, exist_ok=True)
-        (dest_dir / filename).write_bytes(data)
-        rel = f"assets/{target}/{filename}"
-        return self._json(200, {"ok": True, "path": rel})
-
-    def _handle_upload(self):
-        """Multipart upload with fields: target, file (multiple allowed)."""
+        Mode lokal: tulis langsung ke disk. (Mode Vercel di-handle fungsi
+        serverless yang meng-commit ke GitHub.)
+        """
         ctype = self.headers.get("Content-Type", "")
         if not ctype.startswith("multipart/form-data"):
             return self._json(400, {"ok": False, "error": "expected multipart/form-data"})
@@ -252,14 +236,18 @@ class AdminHandler(BaseHTTPRequestHandler):
             if field != "file":
                 continue
 
+            if target not in IMAGE_DIRS:
+                return self._json(
+                    400, {"ok": False, "error": f"target harus salah satu dari: {', '.join(IMAGE_DIRS)}"}
+                )
             fn_m = re.search(r'filename="([^"]+)"', headers)
-            if not fn_m or target not in UPLOAD_DIRS:
+            if not fn_m:
                 continue
             filename = safe_name(fn_m.group(1))
             ext = Path(filename).suffix.lower()
-            if ext not in ALLOWED_EXT[target]:
+            if ext not in IMAGE_EXT:
                 return self._json(
-                    415, {"ok": False, "error": f"{ext} not allowed in {target}"}
+                    415, {"ok": False, "error": f"ekstensi {ext} tidak diizinkan (gambar: jpg/png/webp/avif)"}
                 )
             dest_dir = UPLOAD_DIRS[target]
             dest_dir.mkdir(parents=True, exist_ok=True)
@@ -267,8 +255,8 @@ class AdminHandler(BaseHTTPRequestHandler):
             saved.append(f"assets/{target}/{filename}")
 
         if not saved:
-            return self._json(400, {"ok": False, "error": "no files saved"})
-        return self._json(200, {"ok": True, "files": saved})
+            return self._json(400, {"ok": False, "error": "tidak ada file"})
+        return self._json(200, {"ok": True, "mode": "local", "path": saved[0]})
 
     def log_message(self, fmt, *args):  # quieter logs
         sys.stderr.write("[admin] " + (fmt % args) + "\n")

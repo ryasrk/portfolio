@@ -152,20 +152,17 @@
 
   <!-- ================= VIDEOS ================= -->
   <section class="panel" data-panel="videos">
-    <p class="hint">Stream tab pada bagian Deployments. Upload video (mp4/webm) + poster (jpg) atau tempel path yang sudah ada di repo.</p>
+    <p class="hint">Stream tab pada bagian Deployments. Video (mp4/webm) di-commit manual ke <b>assets/videos/</b>; poster bisa di-upload langsung (gambar).</p>
     <div id="videos-list"></div>
     <details class="card" style="margin-top:1rem">
       <summary style="cursor:pointer;font-weight:700;font-size:0.85rem">+ Add video stream</summary>
       <div class="add-video" style="margin-top:0.8rem">
         <div><label>Title (untuk tab & footer player)</label><input type="text" id="v-title" placeholder="SENTINEL 15-CCTV ANALYTICS" /></div>
         <div><label>Tab label (pendek)</label><input type="text" id="v-tab" placeholder="Sentinel CCTV" /></div>
-        <div class="full"><label>Video path — upload baru atau isi manual</label>
-          <div class="row">
-            <input type="text" id="v-src" class="grow" placeholder="assets/videos/nama-video.mp4" />
-            <input type="file" id="v-file" accept="video/mp4,video/webm" />
-          </div>
+        <div class="full"><label>Video path — commit file video ke repo (assets/videos/…)</label>
+          <input type="text" id="v-src" placeholder="assets/videos/nama-video.mp4" />
         </div>
-        <div class="full"><label>Poster path (opsional)</label>
+        <div class="full"><label>Poster path (opsional) — atau upload gambar</label>
           <div class="row">
             <input type="text" id="v-poster" class="grow" placeholder="assets/images/poster-nama.jpg" />
             <input type="file" id="v-poster-file" accept="image/*" />
@@ -243,19 +240,16 @@ async function saveContent() {
   dirty = false;
 }
 
-async function uploadFile(target, file) {
-  if (serverMode === "vercel") {
-    throw new Error(
-      "upload web nonaktif di mode Vercel (limit 4MB) — commit file ke assets/ secara manual, atau jalankan mode lokal ./start-portfolio.sh"
-    );
-  }
+async function uploadImage(target, file) {
+  // Satu jalur untuk semua gambar (timeline / certificates / images).
+  // Vercel: commit ke GitHub via /api/upload-image. Lokal: tulis ke disk.
   const fd = new FormData();
   fd.append("target", target);
   fd.append("file", file, file.name);
-  const r = await api("/api/upload", { method: "POST", body: fd });
-  if (!r.ok) throw new Error((await r.json()).error || "upload gagal");
-  const out = await r.json();
-  return out.files?.[0];
+  const r = await api("/api/upload-image", { method: "POST", body: fd });
+  const out = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(out.error || `upload gagal (HTTP ${r.status})`);
+  return out.path;
 }
 
 /* ---------------- Auth ---------------- */
@@ -411,7 +405,7 @@ function timelineCard(item, i) {
     const file = up.files[0];
     if (!file) return;
     try {
-      const path = await uploadFile("timeline", file);
+      const path = await uploadImage("timeline", file);
       item.image = path;
       $(".thumb", el).src = path;
       $('[data-f="image"]', el).value = path;
@@ -471,7 +465,7 @@ function certCard(item, i) {
     const file = up.files[0];
     if (!file) return;
     try {
-      const path = await uploadFile("certificates", file);
+      const path = await uploadImage("certificates", file);
       item.image = path;
       $(".thumb", el).src = path;
       $('[data-f="image"]', el).value = path;
@@ -503,13 +497,12 @@ function videoCard(item, i) {
         <label>Title</label>
         <input type="text" data-f="title" value="${esc(item.title)}" />
         <div style="height:0.5rem"></div>
-        <div class="row">
-          <div class="grow"><label>Video path</label><input type="text" data-f="src" value="${esc(item.src)}" /></div>
-          <label class="btn" style="align-self:end">Replace video<input type="file" accept="video/*" data-upload="videos" hidden /></label>
+        <div class="row" style="margin-top:0.5rem">
+          <div class="grow"><label>Video path (commit file video ke repo)</label><input type="text" data-f="src" value="${esc(item.src)}" /></div>
         </div>
         <div class="row" style="margin-top:0.5rem">
-          <div class="grow"><label>Poster path</label><input type="text" data-f="poster" value="${esc(item.poster)}" /></div>
-          <label class="btn" style="align-self:end">Replace poster<input type="file" accept="image/*" data-upload="posters" hidden /></label>
+          <div class="grow"><label>Poster path (upload gambar)</label><input type="text" data-f="poster" value="${esc(item.poster)}" /></div>
+          <label class="btn" style="align-self:end">Upload poster<input type="file" accept="image/*" data-upload="posters" hidden /></label>
         </div>
       </div>
       <span class="pill">#${i + 1}</span>
@@ -524,13 +517,14 @@ function videoCard(item, i) {
     up.addEventListener("change", async () => {
       const file = up.files[0];
       if (!file) return;
-      const target = up.dataset.upload === "posters" ? "images" : "videos";
       try {
-        const path = await uploadFile(target, file);
-        if (up.dataset.upload === "posters") { item.poster = path; $('[data-f="poster"]', el).value = path; $(".thumb", el).src = path; }
-        else { item.src = path; $('[data-f="src"]', el).value = path; }
+        // Poster = gambar — jalur upload-image yang sama
+        const path = await uploadImage("images", file);
+        item.poster = path;
+        $('[data-f="poster"]', el).value = path;
+        $(".thumb", el).src = path;
         markDirty();
-        toast("File terupload: " + path);
+        toast("Poster terupload: " + path);
       } catch (e) { toast("⚠ " + e.message); }
     });
   });
@@ -597,19 +591,17 @@ $("#add-cert").onclick = () => {
 $("#add-video").onclick = async () => {
   const title = $("#v-title").value.trim();
   const src = $("#v-src").value.trim();
-  if (!title || !src) return toast("⚠ Title dan video path wajib");
+  if (!title || !src) return toast("⚠ Title dan video path wajib (commit file video ke repo secara manual)");
   const stream = { id: "stream-" + Date.now(), src, poster: $("#v-poster").value.trim(), title, tab: $("#v-tab").value.trim() };
 
-  // optional new uploads override paths
-  const vf = $("#v-file").files[0];
-  if (vf) stream.src = await uploadFile("videos", vf);
+  // poster boleh langsung upload gambar
   const pf = $("#v-poster-file").files[0];
-  if (pf) stream.poster = await uploadFile("images", pf);
+  if (pf) stream.poster = await uploadImage("images", pf);
 
   data.videos.push(stream);
   markDirty(); renderAll();
   $("#v-title").value = $("#v-src").value = $("#v-poster").value = $("#v-tab").value = "";
-  $("#v-file").value = $("#v-poster-file").value = "";
+  $("#v-poster-file").value = "";
   toast("Stream ditambahkan");
 };
 

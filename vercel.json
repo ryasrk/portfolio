@@ -13,11 +13,8 @@
     "api/content.py": {
       "maxDuration": 30
     },
-    "api/upload.py": {
-      "maxDuration": 10
-    },
-    "api/upload-video.py": {
-      "maxDuration": 10
+    "api/upload-image.py": {
+      "maxDuration": 30
     }
   },
   "headers": [
