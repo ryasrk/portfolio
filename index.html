@@ -173,6 +173,7 @@
     <nav class="masthead-nav hide-below-sm">
       <a href="#hero" class="masthead-link">Identity</a>
       <a href="#timeline" class="masthead-link">Timeline</a>
+      <a href="#certificates" class="masthead-link">Certificates</a>
       <a href="#paddock" class="masthead-link">Deployments</a>
       <a href="#tech-stacks" class="masthead-link">Tech Stacks</a>
       <a href="#contact" class="masthead-link">Contact</a>
@@ -192,20 +193,6 @@
     <div class="stack-inner" data-pinned-inner>
       <div class="hero-canvas-wrap">
         <canvas id="hero-canvas"></canvas>
-      </div>
-
-      <!-- Floating 3D Spatial Radar HUD -->
-      <div class="hero-hud-telemetry hide-below-md">
-        <div class="hero-hud-row">
-          <span class="pulse-indicator"></span>
-          <span class="hero-hud-label">LIDAR 3D SPATIAL RADAR</span>
-        </div>
-        <div class="hero-hud-metrics">
-          <span id="hud-coord-x">X: +0.00</span>
-          <span id="hud-coord-y">Y: +0.00</span>
-          <span id="hud-coord-z">Z: 6.50</span>
-          <span class="hero-hud-status">LOCK: 99.8%</span>
-        </div>
       </div>
 
       <!-- Landmark for 3D camera centering -->
@@ -281,7 +268,7 @@
 
       <div class="systems-header-block padded-compact">
         <div>
-          <div class="systems-sub-tag">Career timeline, 2020 to 2026</div>
+          <div class="systems-sub-tag">Field deployments, 2023 to 2026</div>
           <h2 class="systems-title-lg">Career Timeline</h2>
         </div>
       </div>
@@ -294,126 +281,9 @@
           <rect id="timeline-rail-marker" x="-4.5" y="-4.5" width="9" height="9" fill="var(--accent)" transform="translate(8, 0)" />
         </svg>
 
-        <!-- 7 Milestone Rows -->
-        <!-- Row 1: 2020 -->
-        <div class="timeline-row" data-timeline-row data-frame="centre">
-          <div class="timeline-node-marker" aria-hidden="true">
-            <span class="timeline-node-dot"></span>
-            <span class="timeline-node-year">2020</span>
-          </div>
-
-          <div class="timeline-copy-side" data-parallax-copy>
-            <div class="timeline-card">
-              <div class="timeline-card-header">
-                <div class="timeline-badge-group">
-                  <span class="timeline-year-badge" data-year-text>2020</span>
-                  <span class="timeline-org-badge">Universitas Singaperbangsa</span>
-                </div>
-                <span class="timeline-status-badge">Honors • GPA 3.78</span>
-              </div>
-
-              <h3 class="timeline-role-title">ELECTRICAL & EMBEDDED SYSTEMS FOUNDATION</h3>
-              <p class="timeline-desc-text" data-copy-text>
-                Enrolled in Electrical Engineering (B.Eng). Mastered analog circuitry, digital signal processing, microcontrollers (STM32, ESP32), and low-level Linux systems, graduating with GPA 3.78/4.00.
-              </p>
-
-              <div class="timeline-tech-stack">
-                <span class="tag-pill">C / C++</span>
-                <span class="tag-pill">STM32 / ESP32</span>
-                <span class="tag-pill">Signal Processing</span>
-                <span class="tag-pill">Linux Kernel</span>
-              </div>
-
-              <div class="timeline-card-footer">
-                <button type="button" class="timeline-action-btn" onclick="window.openDossier('embedded')">
-                  <span>Inspect Dossier</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-plate-side" data-parallax-plate>
-            <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('embedded')">
-              <div class="timeline-media-viewport">
-                <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // EMB-2020</span>
-                  <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
-                </div>
-                <div class="timeline-media-frame">
-                  <img src="assets/timeline/2020.webp" alt="Circuit topology graph" class="timeline-media-img" loading="lazy" />
-                  <div class="timeline-media-corners">
-                    <span class="corner-tl"></span>
-                    <span class="corner-tr"></span>
-                    <span class="corner-bl"></span>
-                    <span class="corner-br"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 2: 2022 -->
-        <div class="timeline-row" data-timeline-row data-frame="centre">
-          <div class="timeline-node-marker" aria-hidden="true">
-            <span class="timeline-node-dot"></span>
-            <span class="timeline-node-year">2022</span>
-          </div>
-
-          <div class="timeline-copy-side" data-parallax-copy>
-            <div class="timeline-card">
-              <div class="timeline-card-header">
-                <div class="timeline-badge-group">
-                  <span class="timeline-year-badge" data-year-text>2022</span>
-                  <span class="timeline-org-badge">Robotics & Vision Lab</span>
-                </div>
-                <span class="timeline-status-badge">Applied Research</span>
-              </div>
-
-              <h3 class="timeline-role-title">ROBOTICS & COMPUTER VISION RESEARCH</h3>
-              <p class="timeline-desc-text" data-copy-text>
-                Architected real-time robotics vision pipelines, sensor fusion algorithms, and convolutional neural networks for autonomous navigation, spatial sensing, and object recognition.
-              </p>
-
-              <div class="timeline-tech-stack">
-                <span class="tag-pill">OpenCV</span>
-                <span class="tag-pill">PyTorch</span>
-                <span class="tag-pill">ROS</span>
-                <span class="tag-pill">Sensor Fusion</span>
-              </div>
-
-              <div class="timeline-card-footer">
-                <button type="button" class="timeline-action-btn" onclick="window.openDossier('robotics')">
-                  <span>Inspect Dossier</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-plate-side" data-parallax-plate>
-            <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('robotics')">
-              <div class="timeline-media-viewport">
-                <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // ROB-2022</span>
-                  <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
-                </div>
-                <div class="timeline-media-frame">
-                  <img src="assets/timeline/2022.webp" alt="Edge system monitor" class="timeline-media-img" loading="lazy" />
-                  <div class="timeline-media-corners">
-                    <span class="corner-tl"></span>
-                    <span class="corner-tr"></span>
-                    <span class="corner-bl"></span>
-                    <span class="corner-br"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 3: 2023 -->
+        <!-- 5 Milestone Rows — images are named per section: replace the file in
+             assets/timeline/<slug>.jpg keeping the same name to swap the artifact -->
+        <!-- Row 1: Bangkit Academy -->
         <div class="timeline-row" data-timeline-row data-frame="centre">
           <div class="timeline-node-marker" aria-hidden="true">
             <span class="timeline-node-dot"></span>
@@ -432,14 +302,14 @@
 
               <h3 class="timeline-role-title">BANGKIT ACADEMY — DISTINCTION GRADUATE</h3>
               <p class="timeline-desc-text" data-copy-text>
-                Selected among top 10% distinction graduates in Google Bangkit Academy. Developed Waste Wizard CNN classification model with 95% accuracy and earned Google TensorFlow Developer Certification.
+                Machine Learning cohort under Google, Tokopedia, Gojek &amp; Traveloka. Built Waste Wizard, a CNN municipal waste-classification mobile app reaching 95% validation accuracy, and earned the Google TensorFlow Developer Certificate in a top-10% graduating cohort.
               </p>
 
               <div class="timeline-tech-stack">
                 <span class="tag-pill">TensorFlow</span>
+                <span class="tag-pill">Keras CNN</span>
                 <span class="tag-pill">Google Cloud GCP</span>
-                <span class="tag-pill">Keras</span>
-                <span class="tag-pill">Model Serving</span>
+                <span class="tag-pill">Mobile Classification</span>
               </div>
 
               <div class="timeline-card-footer">
@@ -455,11 +325,11 @@
             <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('bangkit')">
               <div class="timeline-media-viewport">
                 <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // BKT-2023</span>
+                  <span class="hud-mono-tag">ARTIFACT // WASTE-WIZARD</span>
                   <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
                 </div>
                 <div class="timeline-media-frame">
-                  <img src="assets/timeline/2023.webp" alt="Bangkit schematic inspection" class="timeline-media-img" loading="lazy" />
+                  <img src="assets/timeline/bangkit-academy.jpg" alt="Waste Wizard mobile waste classification app" class="timeline-media-img" loading="lazy" />
                   <div class="timeline-media-corners">
                     <span class="corner-tl"></span>
                     <span class="corner-tr"></span>
@@ -472,66 +342,7 @@
           </div>
         </div>
 
-        <!-- Row 4: 2024 -->
-        <div class="timeline-row" data-timeline-row data-frame="centre">
-          <div class="timeline-node-marker" aria-hidden="true">
-            <span class="timeline-node-dot"></span>
-            <span class="timeline-node-year">2024</span>
-          </div>
-
-          <div class="timeline-copy-side" data-parallax-copy>
-            <div class="timeline-card">
-              <div class="timeline-card-header">
-                <div class="timeline-badge-group">
-                  <span class="timeline-year-badge" data-year-text>2024</span>
-                  <span class="timeline-org-badge">Engineering Automation</span>
-                </div>
-                <span class="timeline-status-badge">14x Acceleration</span>
-              </div>
-
-              <h3 class="timeline-role-title">AUTONOMOUS CAD BOQ & SKELETON EXTRACTION</h3>
-              <p class="timeline-desc-text" data-copy-text>
-                Engineered full-stack computer vision pipelines parsing architectural blueprints, DWG/DXF drawings, and extracting engineering Bill of Quantities with 14x acceleration over manual estimation.
-              </p>
-
-              <div class="timeline-tech-stack">
-                <span class="tag-pill">PyMuPDF</span>
-                <span class="tag-pill">Vector Geometry</span>
-                <span class="tag-pill">Custom OCR</span>
-                <span class="tag-pill">FastAPI</span>
-              </div>
-
-              <div class="timeline-card-footer">
-                <button type="button" class="timeline-action-btn" onclick="window.openDossier('cad')">
-                  <span>Inspect Dossier</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-plate-side" data-parallax-plate>
-            <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('cad')">
-              <div class="timeline-media-viewport">
-                <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // CAD-2024</span>
-                  <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
-                </div>
-                <div class="timeline-media-frame">
-                  <img src="assets/timeline/2024.webp" alt="CAD BoQ Extraction" class="timeline-media-img" loading="lazy" />
-                  <div class="timeline-media-corners">
-                    <span class="corner-tl"></span>
-                    <span class="corner-tr"></span>
-                    <span class="corner-bl"></span>
-                    <span class="corner-br"></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row 5: 2025-A -->
+        <!-- Row 2: Jakarta SmartEye -->
         <div class="timeline-row" data-timeline-row data-frame="centre">
           <div class="timeline-node-marker" aria-hidden="true">
             <span class="timeline-node-dot"></span>
@@ -550,13 +361,13 @@
 
               <h3 class="timeline-role-title">JAKARTA SMARTEYE — 3,000+ CAMERAS</h3>
               <p class="timeline-desc-text" data-copy-text>
-                AI Engineer at PT Bali Towerindo Sentra Tbk. Maintained, tuned, and deployed License Plate Recognition models across 3,000+ metropolitan cameras in Jakarta with 99.2% accuracy, managing three high-availability Linux production server tiers.
+                AI Engineer maintaining and tuning License Plate Recognition models across 3,000+ operational Jakarta CCTV feeds at 99.2% accuracy — plus waste-segmentation and crowd analytics for the MBG program — over three high-availability Linux production tiers.
               </p>
 
               <div class="timeline-tech-stack">
                 <span class="tag-pill">YOLOv8 LPR</span>
                 <span class="tag-pill">TensorRT</span>
-                <span class="tag-pill">3,000+ CCTV Feeds</span>
+                <span class="tag-pill">Polygon Segmentation</span>
                 <span class="tag-pill">Ubuntu Server</span>
               </div>
 
@@ -573,11 +384,11 @@
             <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('sentinel')">
               <div class="timeline-media-viewport">
                 <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // SNT-2025</span>
+                  <span class="hud-mono-tag">ARTIFACT // SMART-EYE</span>
                   <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
                 </div>
                 <div class="timeline-media-frame">
-                  <img src="assets/timeline/2025-a.webp" alt="Sentinel 15 CCTV grid" class="timeline-media-img" loading="lazy" />
+                  <img src="assets/timeline/jakarta-smarteye.jpg" alt="Jakarta SmartEye license plate recognition" class="timeline-media-img" loading="lazy" />
                   <div class="timeline-media-corners">
                     <span class="corner-tl"></span>
                     <span class="corner-tr"></span>
@@ -590,7 +401,7 @@
           </div>
         </div>
 
-        <!-- Row 6: 2025-B -->
+        <!-- Row 3: Fleet Vision -->
         <div class="timeline-row" data-timeline-row data-frame="centre">
           <div class="timeline-node-marker" aria-hidden="true">
             <span class="timeline-node-dot"></span>
@@ -602,21 +413,21 @@
               <div class="timeline-card-header">
                 <div class="timeline-badge-group">
                   <span class="timeline-year-badge" data-year-text>2025</span>
-                  <span class="timeline-org-badge">Gerbang Data Indonesia</span>
+                  <span class="timeline-org-badge">Baramulti Group</span>
                 </div>
                 <span class="timeline-status-badge">26 Marine Vessels</span>
               </div>
 
               <h3 class="timeline-role-title">FLEET VISION ACROSS 26 MARINE VESSELS</h3>
               <p class="timeline-desc-text" data-copy-text>
-                AI Engineer & Project Lead at Gerbang Data Indonesia. Deployed commercial tugboat surveillance, Teltonika GPS telematics API, 7-module mining CV platform (AdaFace IR-101, PPE, Danger Zone Intrusion, Vehicle Hull OCR), and Nexus Annotator platform.
+                AI Engineer &amp; Project Lead deploying bridge-crew surveillance across 26 commercial tugboats: 360° panorama vision, AdaFace IR-101 crew identification, danger-zone intrusion alerts, and Teltonika satellite GPS telematics with automated Telegram dispatch.
               </p>
 
               <div class="timeline-tech-stack">
                 <span class="tag-pill">Jetson Orin Nano</span>
                 <span class="tag-pill">AdaFace IR-101</span>
-                <span class="tag-pill">Teltonika API</span>
-                <span class="tag-pill">Telegram Bot</span>
+                <span class="tag-pill">360° Panorama</span>
+                <span class="tag-pill">Teltonika GPS</span>
               </div>
 
               <div class="timeline-card-footer">
@@ -632,11 +443,11 @@
             <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('maritime')">
               <div class="timeline-media-viewport">
                 <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // MRT-2025</span>
+                  <span class="hud-mono-tag">ARTIFACT // FLEET-VISION</span>
                   <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
                 </div>
                 <div class="timeline-media-frame">
-                  <img src="assets/timeline/2025-b.webp" alt="Maritime tugboat deployment" class="timeline-media-img" loading="lazy" />
+                  <img src="assets/timeline/fleet-vision.jpg" alt="Fleet vision bridge monitoring on marine vessels" class="timeline-media-img" loading="lazy" />
                   <div class="timeline-media-corners">
                     <span class="corner-tl"></span>
                     <span class="corner-tr"></span>
@@ -649,37 +460,37 @@
           </div>
         </div>
 
-        <!-- Row 7: 2026 -->
+        <!-- Row 4: Drawing Converter -->
         <div class="timeline-row" data-timeline-row data-frame="centre">
           <div class="timeline-node-marker" aria-hidden="true">
             <span class="timeline-node-dot"></span>
-            <span class="timeline-node-year">2026</span>
+            <span class="timeline-node-year">2024</span>
           </div>
 
           <div class="timeline-copy-side" data-parallax-copy>
             <div class="timeline-card">
               <div class="timeline-card-header">
                 <div class="timeline-badge-group">
-                  <span class="timeline-year-badge" data-year-text>2026</span>
-                  <span class="timeline-org-badge">Autonomous AI Labs</span>
+                  <span class="timeline-year-badge" data-year-text>2024</span>
+                  <span class="timeline-org-badge">Versigent • PT Aptiv Components Indonesia</span>
                 </div>
-                <span class="timeline-status-badge">● Production Live</span>
+                <span class="timeline-status-badge">14x Acceleration</span>
               </div>
 
-              <h3 class="timeline-role-title">AUTONOMOUS EDGE & ENTERPRISE AGENTS</h3>
+              <h3 class="timeline-role-title">DRAWING CONVERTER — WIRE-HARNESS VECTORS</h3>
               <p class="timeline-desc-text" data-copy-text>
-                Pioneering low-latency edge architectures, ONNX Runtime quantization, local-first LLM agents (Ollama, llama.cpp, Qdrant, LangGraph), and zero-frame-drop /dev/shm shared memory pipelines operating at 45 FPS and 8.2ms latency.
+                Engineered the automated CAD wire-harness drawing converter: schematic parsing, vector skeletonization, and Delphi/Aptiv catalog cross-referencing that extracts terminals, seals, and BoQ tables — cutting engineering turnaround from 3 days to under 5 minutes.
               </p>
 
               <div class="timeline-tech-stack">
-                <span class="tag-pill">LangGraph</span>
-                <span class="tag-pill">Qdrant Vector DB</span>
-                <span class="tag-pill">n8n Automation</span>
-                <span class="tag-pill">Zero-Drop Ramdisk</span>
+                <span class="tag-pill">OpenCV</span>
+                <span class="tag-pill">Vector Geometry</span>
+                <span class="tag-pill">Custom OCR</span>
+                <span class="tag-pill">FastAPI</span>
               </div>
 
               <div class="timeline-card-footer">
-                <button type="button" class="timeline-action-btn" onclick="window.openDossier('turboquant')">
+                <button type="button" class="timeline-action-btn" onclick="window.openDossier('cad')">
                   <span>Inspect Dossier</span>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
                 </button>
@@ -688,14 +499,73 @@
           </div>
 
           <div class="timeline-plate-side" data-parallax-plate>
-            <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('turboquant')">
+            <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('cad')">
               <div class="timeline-media-viewport">
                 <div class="timeline-media-hud-bar">
-                  <span class="hud-mono-tag">SYS-ARTIFACT // TRB-2026</span>
+                  <span class="hud-mono-tag">ARTIFACT // DRAWING-CONVERTER</span>
                   <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
                 </div>
                 <div class="timeline-media-frame">
-                  <img src="assets/timeline/2026.webp" alt="Turboquant AI agent tool execution" class="timeline-media-img" loading="lazy" />
+                  <img src="assets/timeline/drawing-converter.jpg" alt="Drawing converter wire-harness vector extraction" class="timeline-media-img" loading="lazy" />
+                  <div class="timeline-media-corners">
+                    <span class="corner-tl"></span>
+                    <span class="corner-tr"></span>
+                    <span class="corner-bl"></span>
+                    <span class="corner-br"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 5: Sentinel Hull -->
+        <div class="timeline-row" data-timeline-row data-frame="centre">
+          <div class="timeline-node-marker" aria-hidden="true">
+            <span class="timeline-node-dot"></span>
+            <span class="timeline-node-year">2025</span>
+          </div>
+
+          <div class="timeline-copy-side" data-parallax-copy>
+            <div class="timeline-card">
+              <div class="timeline-card-header">
+                <div class="timeline-badge-group">
+                  <span class="timeline-year-badge" data-year-text>2025</span>
+                  <span class="timeline-org-badge">PT Asmin Bara Bronang</span>
+                </div>
+                <span class="timeline-status-badge">Hull OCR Live</span>
+              </div>
+
+              <h3 class="timeline-role-title">SENTINEL AI — HULL NUMBER RECOGNITION</h3>
+              <p class="timeline-desc-text" data-copy-text>
+                Two-stage detection and OCR reading vessel hull numbers (No. Lambung) on dusty mining haul roads — 90,722+ tons of haulage tracked across 41 hull classes with calibrated ground-speed radar and zero-drop /dev/shm frame buffering.
+              </p>
+
+              <div class="timeline-tech-stack">
+                <span class="tag-pill">YOLOv8 ONNX</span>
+                <span class="tag-pill">Hull OCR</span>
+                <span class="tag-pill">Ground Radar</span>
+                <span class="tag-pill">Linux /dev/shm</span>
+              </div>
+
+              <div class="timeline-card-footer">
+                <button type="button" class="timeline-action-btn" onclick="window.openDossier('mining')">
+                  <span>Inspect Dossier</span>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-plate-side" data-parallax-plate>
+            <div class="timeline-media-card" data-timeline-plate onclick="window.openDossier('mining')">
+              <div class="timeline-media-viewport">
+                <div class="timeline-media-hud-bar">
+                  <span class="hud-mono-tag">ARTIFACT // SENTINEL-HULL</span>
+                  <span class="hud-inspect-tag">EXPAND DOSSIER ↗</span>
+                </div>
+                <div class="timeline-media-frame">
+                  <img src="assets/timeline/sentinel-hull.jpg" alt="Sentinel AI vessel hull number recognition" class="timeline-media-img" loading="lazy" />
                   <div class="timeline-media-corners">
                     <span class="corner-tl"></span>
                     <span class="corner-tr"></span>
@@ -712,7 +582,93 @@
   </section>
 
   <!-- ============================================================
-       BLOCK 3: FIELD VIDEO CONSOLE
+       BLOCK 3: CERTIFICATES & CREDENTIALS
+       Replace / extend: drop files named cert-1, cert-2, cert-3 ... into
+       assets/certificates/ and mirror a card below — the grid keeps its fixed
+       three-column rhythm at any count.
+       ============================================================ -->
+  <section id="certificates" class="section-certificates" data-cert-section>
+    <div class="cert-container">
+      <div class="systems-header-block padded-compact">
+        <div>
+          <div class="systems-sub-tag">Verified credentials & official certificates</div>
+          <h2 class="systems-title-lg">Certificates</h2>
+        </div>
+      </div>
+
+      <div class="cert-grid">
+        <!-- Certificate 1 — copy this card and increment the number to add more -->
+        <figure class="cert-card" data-cert-lightbox>
+          <div class="cert-media">
+            <img src="assets/certificates/cert-1.jpg" alt="TensorFlow Developer Certificate — Google" loading="lazy" />
+          </div>
+          <figcaption class="cert-meta">
+            <span class="cert-index">CERT-01</span>
+            <span class="cert-title">TensorFlow Developer Certificate</span>
+            <span class="cert-issuer">Google</span>
+          </figcaption>
+        </figure>
+
+        <figure class="cert-card" data-cert-lightbox>
+          <div class="cert-media">
+            <img src="assets/certificates/cert-2.jpg" alt="Machine Learning Specialization — Stanford University & DeepLearning.AI" loading="lazy" />
+          </div>
+          <figcaption class="cert-meta">
+            <span class="cert-index">CERT-02</span>
+            <span class="cert-title">Machine Learning Specialization</span>
+            <span class="cert-issuer">Stanford University & DeepLearning.AI</span>
+          </figcaption>
+        </figure>
+
+        <figure class="cert-card" data-cert-lightbox>
+          <div class="cert-media">
+            <img src="assets/certificates/cert-3.jpg" alt="TensorFlow: Data and Deployment — DeepLearning.AI & Coursera" loading="lazy" />
+          </div>
+          <figcaption class="cert-meta">
+            <span class="cert-index">CERT-03</span>
+            <span class="cert-title">TensorFlow: Data and Deployment</span>
+            <span class="cert-issuer">DeepLearning.AI & Coursera</span>
+          </figcaption>
+        </figure>
+
+        <figure class="cert-card" data-cert-lightbox>
+          <div class="cert-media">
+            <img src="assets/certificates/cert-4.jpg" alt="DHSP Video Surveillance System Engineer — Dahua Technology" loading="lazy" />
+          </div>
+          <figcaption class="cert-meta">
+            <span class="cert-index">CERT-04</span>
+            <span class="cert-title">DHSP Video Surveillance System Engineer</span>
+            <span class="cert-issuer">Dahua Technology Co. LTD</span>
+          </figcaption>
+        </figure>
+
+        <figure class="cert-card" data-cert-lightbox>
+          <div class="cert-media">
+            <img src="assets/certificates/cert-5.jpg" alt="Bangkit Academy Distinction Graduate Top 10% — Google, GoTo, Traveloka" loading="lazy" />
+          </div>
+          <figcaption class="cert-meta">
+            <span class="cert-index">CERT-05</span>
+            <span class="cert-title">Distinction Graduate — Top 10%</span>
+            <span class="cert-issuer">Bangkit Academy • Google • GoTo • Traveloka</span>
+          </figcaption>
+        </figure>
+
+        <figure class="cert-card" data-cert-lightbox>
+          <div class="cert-media">
+            <img src="assets/certificates/cert-6.jpg" alt="Bachelor of Electrical Engineering GPA 3.78 — Universitas Singaperbangsa Karawang" loading="lazy" />
+          </div>
+          <figcaption class="cert-meta">
+            <span class="cert-index">CERT-06</span>
+            <span class="cert-title">B.Eng Electrical Engineering — GPA 3.78/4.00</span>
+            <span class="cert-issuer">Universitas Singaperbangsa Karawang</span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       BLOCK 4: FIELD VIDEO CONSOLE
        ============================================================ -->
   <section id="paddock" class="section-field" data-field-section>
     <canvas id="field-contour-canvas" class="contour-canvas-bg"></canvas>
@@ -761,7 +717,7 @@
   </section>
 
   <!-- ============================================================
-       BLOCK 4: CORE TECH STACKS & DOMAINS (CV Aligned)
+       BLOCK 5: CORE TECH STACKS & DOMAINS (CV Aligned)
        ============================================================ -->
   <section id="tech-stacks" class="section-tech-stacks" data-tech-section>
     <div class="tech-stacks-container">
@@ -910,26 +866,13 @@
           </div>
         </div>
       </div>
-
-      <!-- Verified Credentials & Certifications Strip -->
-      <div class="tech-certifications-bar">
-        <div class="tech-cert-title">Verified Certifications & Credentials</div>
-        <div class="tech-cert-items">
-          <span class="tech-cert-pill">Google TensorFlow Developer Certified</span>
-          <span class="tech-cert-pill">Stanford University Machine Learning (Coursera)</span>
-          <span class="tech-cert-pill">DeepLearning.AI TensorFlow: Data & Deployment</span>
-          <span class="tech-cert-pill">Dahua DHSP Video Surveillance System Engineer</span>
-          <span class="tech-cert-pill">Bangkit Academy ML Distinction Graduate (Top 10%)</span>
-          <span class="tech-cert-pill">B.Eng Electrical Engineering, GPA 3.78/4.00 (UNSIKA)</span>
-        </div>
-      </div>
     </div>
   </section>
 
   </main>
 
   <!-- ============================================================
-       BLOCK 5: FOOTER & DIRECT CONTACT
+       BLOCK 6: FOOTER & DIRECT CONTACT
        ============================================================ -->
   <footer id="contact" class="section-footer" data-footer-section>
     <div class="footer-inner-box">
@@ -958,6 +901,7 @@
           <span class="footer-col-header">Sections</span>
           <a href="#hero" class="footer-nav-item" data-footer-nav-link>Identity</a>
           <a href="#timeline" class="footer-nav-item" data-footer-nav-link>Career Timeline</a>
+          <a href="#certificates" class="footer-nav-item" data-footer-nav-link>Certificates</a>
           <a href="#paddock" class="footer-nav-item" data-footer-nav-link>Deployments on Video</a>
           <a href="#tech-stacks" class="footer-nav-item" data-footer-nav-link>Tech Stacks</a>
           <a href="#contact" class="footer-nav-item" data-footer-nav-link>Contact</a>
@@ -1051,6 +995,7 @@
     <nav class="menu-sheet-nav">
       <a href="#hero" class="menu-sheet-link" data-sheet-link>Identity</a>
       <a href="#timeline" class="menu-sheet-link" data-sheet-link>Career Timeline</a>
+      <a href="#certificates" class="menu-sheet-link" data-sheet-link>Certificates</a>
       <a href="#paddock" class="menu-sheet-link" data-sheet-link>Deployments on Video</a>
       <a href="#contact" class="menu-sheet-link" data-sheet-link>Contact</a>
     </nav>

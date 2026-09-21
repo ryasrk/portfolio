@@ -21,24 +21,24 @@ export const initTimeline = (container) => {
 
   const cleanups = [];
 
-  // Central Rail Progress & Marker Rotation (5 full turns = 1800 deg)
+  // Central Rail Progress & Marker Rotation (5 full turns = 1800 deg).
+  // Geometry is measured from the live SVG so any number of milestone rows
+  // keeps the marker aligned with the real rail length.
   if (railElement && railProgress && railMarker) {
-    const totalHeight = 2668; // 169 + 4*462 + 3*217
-    const lastRowCenter = 169 + 462 + 217 + 462 + 217 + 462 + 217 + 231 - 50;
-    const restShare = (lastRowCenter - 0) / totalHeight;
-
     const cleanupRail = scrub(railElement, {
       start: "top center",
       end: "bottom bottom",
       from: 0,
       to: 1,
       apply: (_, rawProgress, smoothedProgress) => {
-        const run = smoothedProgress * restShare * 100;
+        const run = smoothedProgress * 100;
         railProgress.setAttribute("height", `${run}%`);
-        const rot = (run / (restShare * 100)) * 1800;
+        // SVG viewBox is 2668 tall and stretches to the container height
+        // (preserveAspectRatio="none"), so marker Y in viewBox units is
+        // simply progress * 2668.
         railMarker.setAttribute(
           "transform",
-          `translate(8, ${run * (totalHeight / 100)}) rotate(${rot})`,
+          `translate(8, ${smoothedProgress * 2668}) rotate(${smoothedProgress * 1800})`,
         );
       },
     });

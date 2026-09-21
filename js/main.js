@@ -170,10 +170,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
     subscribe(tickScene, () => heroScene.tier.frameInterval);
 
-    // Pointer move for WebGL relighting & 3D HUD telemetry
-    const hudX = document.querySelector("#hud-coord-x");
-    const hudY = document.querySelector("#hud-coord-y");
-
+    // Pointer move for WebGL relighting
     if (heroScene.tier.pointerEnabled) {
       window.addEventListener(
         "pointermove",
@@ -181,13 +178,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           const px = (e.clientX / window.innerWidth) * 2 - 1;
           const py = (e.clientY / window.innerHeight) * 2 - 1;
           heroScene.setPointer(px, py);
-
-          if (hudX && hudY) {
-            const signX = px >= 0 ? "+" : "";
-            const signY = -py >= 0 ? "+" : "";
-            hudX.textContent = `X: ${signX}${px.toFixed(2)}`;
-            hudY.textContent = `Y: ${signY}${(-py).toFixed(2)}`;
-          }
         },
         { passive: true },
       );
@@ -336,6 +326,56 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 11. Modal Lightbox
   initModal();
+
+  // 11b. Certificate Lightbox (click a cert card to view full image)
+  const certCards = [...document.querySelectorAll("[data-cert-lightbox]")];
+  if (certCards.length) {
+    const lightbox = document.createElement("div");
+    lightbox.className = "cert-lightbox";
+    lightbox.setAttribute("role", "dialog");
+    lightbox.setAttribute("aria-modal", "true");
+    lightbox.setAttribute("aria-label", "Certificate preview");
+    lightbox.innerHTML = `
+      <button type="button" class="cert-lightbox-close" aria-label="Close preview">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+      <img alt="Certificate" />
+    `;
+    document.body.appendChild(lightbox);
+
+    const lbImg = lightbox.querySelector("img");
+    const lbClose = lightbox.querySelector(".cert-lightbox-close");
+    let lbReturnFocus = null;
+
+    const closeLightbox = () => {
+      lightbox.classList.remove("is-open");
+      unlockScroll();
+      lbReturnFocus?.focus?.({ preventScroll: true });
+    };
+
+    certCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const img = card.querySelector("img");
+        if (!img) return;
+        lbReturnFocus = card;
+        lbImg.src = img.src;
+        lbImg.alt = img.alt || "Certificate";
+        lightbox.classList.add("is-open");
+        lockScroll();
+        lbClose?.focus();
+      });
+    });
+
+    lbClose?.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && lightbox.classList.contains("is-open")) {
+        closeLightbox();
+      }
+    });
+  }
 
   // 12. Fullscreen Menu Sheet (Mobile / Responsive)
   const menuBtn = document.querySelector("#menu-toggle-btn");
