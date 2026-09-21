@@ -290,14 +290,26 @@ function hideLogin() {
 }
 
 async function tryLogin(password) {
-  const r = await fetch("/api/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ password }),
-  });
+  let r;
+  try {
+    r = await fetch("/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password }),
+    });
+  } catch (e) {
+    $("#login-msg").textContent =
+      "Tidak dapat menghubungi API — pastikan halaman dibuka via URL server (Vercel / ./start-portfolio.sh).";
+    return false;
+  }
   const out = await r.json().catch(() => ({}));
+  if (r.status === 404) {
+    $("#login-msg").textContent =
+      "Endpoint /api/login tidak ditemukan — fungsi API belum ter-deploy (cek folder api/ di deployment).";
+    return false;
+  }
   if (!r.ok || !out.ok) {
-    $("#login-msg").textContent = out.error || "password salah";
+    $("#login-msg").textContent = out.error || `login gagal (HTTP ${r.status})`;
     return false;
   }
   token = out.token;

@@ -1,22 +1,46 @@
 {
   "cleanUrls": true,
   "functions": {
-    "api/index.py": {
+    "api/login.py": {
+      "maxDuration": 15
+    },
+    "api/session.py": {
+      "maxDuration": 15
+    },
+    "api/health.py": {
+      "maxDuration": 15
+    },
+    "api/content.py": {
       "maxDuration": 30
+    },
+    "api/upload.py": {
+      "maxDuration": 10
+    },
+    "api/upload-video.py": {
+      "maxDuration": 10
     }
   },
   "headers": [
     {
       "source": "/assets/data/content.json",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store, must-revalidate" }
+        {
+          "key": "Cache-Control",
+          "value": "no-store, must-revalidate"
+        }
       ]
     },
     {
       "source": "/admin.html",
       "headers": [
-        { "key": "Cache-Control", "value": "no-store" },
-        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
       ]
     }
   ]
