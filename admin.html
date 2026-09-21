@@ -244,6 +244,11 @@ async function saveContent() {
 }
 
 async function uploadFile(target, file) {
+  if (serverMode === "vercel") {
+    throw new Error(
+      "upload web nonaktif di mode Vercel (limit 4MB) — commit file ke assets/ secara manual, atau jalankan mode lokal ./start-portfolio.sh"
+    );
+  }
   const fd = new FormData();
   fd.append("target", target);
   fd.append("file", file, file.name);
@@ -257,6 +262,7 @@ async function uploadFile(target, file) {
 
 const SESSION_KEY = "portfolio-admin-token";
 let token = sessionStorage.getItem(SESSION_KEY) || "";
+let serverMode = "local"; // "local" | "vercel"
 
 /** fetch with admin token; on 401, show login and throw */
 async function api(url, opts = {}) {
@@ -602,7 +608,11 @@ $("#save-all").onclick = async (e) => {
   btn.disabled = true;
   try {
     await saveContent();
-    toast("Tersimpan ✓ — refresh situs untuk melihat");
+    toast(
+      serverMode === "vercel"
+        ? "Tersimpan sebagai commit ✓ — Vercel redeploy otomatis ±1 menit"
+        : "Tersimpan ✓ — refresh situs untuk melihat"
+    );
   } catch (err) {
     toast("⚠ " + err.message);
   } finally {
@@ -626,34 +636,58 @@ window.addEventListener("beforeunload", (e) => {
 /* ---------------- init ---------------- */
 
 (async () => {
-  const ok = await apiHealth();
-  $("#api-status").textContent = ok
-    ? "API online — changes save to disk"
-    : "API offline — jalankan: ./start-portfolio.sh";
-  $("#api-status").style.color = ok ? "var(--accent)" : "var(--danger)";
+  // 1. Probe API: /api/session memberi tahu mode (local/vercel) + auth state
+  let session = null;
+  try {
+    const r = await fetch("/api/session", {
+      headers: { "X-Admin-Token": token },
+      cache: "no-store",
+    });
+    if (r.ok) session = await r.json();
+  } catch (_) { /* offline */ }
 
-  if (!ok) {
-    $("#login-msg").textContent = "API offline — server tidak berjalan.";
-    $("#login-overlay").classList.add("show");
-    $("#login-pass").disabled = true;
-    $("#login-submit").disabled = true;
+  const online = !!session;
+  serverMode = session?.mode || "local";
+
+  if (online) {
+    $("#api-status").textContent = serverMode === "vercel"
+      ? "API online (Vercel) — save = commit ke GitHub, redeploy otomatis"
+      : "API online (lokal) — changes save to disk";
+    $("#api-status").style.color = "var(--accent)";
+  } else {
+    $("#api-status").textContent = "API offline — buka via server (./start-portfolio.sh atau Vercel URL)";
+    $("#api-status").style.color = "var(--danger)";
+  }
+
+  // 2. Muat konten: dari API saat online, dari static JSON saat offline
+  try {
+    if (online) {
+      if (session.authenticated) {
+        await loadContent();
+        renderAll();
+        return; // logged in, done
+      }
+      // API online tapi belum login -> tampilkan gate
+      showLogin("");
+      return;
+    }
+  } catch (e) {
+    toast("⚠ " + e.message);
     return;
   }
 
-  // already logged in this session? verify token, else show login
-  if (token) {
-    try {
-      const probe = await fetch("/api/content", {
-        headers: { "X-Admin-Token": token },
-      });
-      if (probe.ok) {
-        await loadContent();
-        renderAll();
-        return;
+  // 3. Offline: muat static JSON read-only, tetap tunjukkan editor + login gate
+  try {
+    const r = await fetch("/assets/data/content.json", { cache: "no-store" });
+    if (r.ok) {
+      data = await r.json();
+      for (const k of ["timeline", "certificates", "videos"]) {
+        if (!Array.isArray(data[k])) data[k] = [];
       }
-    } catch (_) { /* fall through to login */ }
-  }
-  showLogin("");
+      renderAll();
+    }
+  } catch (_) { /* biarkan kosong */ }
+  showLogin(online ? "" : "API offline — login hanya bisa saat server berjalan.");
 })();
 </script>
 </body>

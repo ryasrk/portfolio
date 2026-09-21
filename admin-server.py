@@ -127,6 +127,16 @@ class AdminHandler(BaseHTTPRequestHandler):
         parsed = urlparse(self.path)
         if parsed.path == "/api/health":
             return self._json(200, {"ok": True})
+        if parsed.path == "/api/session":
+            return self._json(
+                200,
+                {
+                    "ok": True,
+                    "mode": "local",
+                    "authenticated": self._authorized(),
+                    "github": False,
+                },
+            )
         if parsed.path.startswith("/api/"):
             if not self._authorized():
                 return self._json(401, {"ok": False, "error": "unauthorized — X-Admin-Token required"})

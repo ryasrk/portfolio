@@ -1,0 +1,23 @@
+{
+  "cleanUrls": true,
+  "functions": {
+    "api/index.py": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/assets/data/content.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/admin.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    }
+  ]
+}
